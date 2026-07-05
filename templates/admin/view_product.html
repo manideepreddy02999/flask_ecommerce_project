@@ -1,0 +1,145 @@
+{% extends "admin/base.html" %}
+{% block title %}SmartCart - {{ product.name }}{% endblock %}
+{% block content %}
+<div class="sc-dashboard sc-animate-fade-in-up">
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: var(--sc-space-6);">
+    <nav
+      style="display: flex; align-items: center; gap: var(--sc-space-2); font-size: var(--sc-text-sm); color: var(--sc-text-muted);">
+      <a href="{{ url_for('product_list') }}" style="color: var(--sc-text-muted); transition: color 0.2s;">Products</a>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+      <span style="color: var(--sc-text-primary);">{{ product.name }}</span>
+    </nav>
+  </div>
+
+  <!-- Product Detail Card -->
+  <div class="glass-card" style="padding: 0; overflow: hidden;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; min-height: 400px;" id="product-detail-grid">
+      <!-- Image Section -->
+      <div style="
+        position: relative; overflow: hidden;
+        background: var(--sc-bg-surface-alt);
+        display: flex; align-items: center; justify-content: center;
+      ">
+        <img src="{{ url_for('static', filename='uploads/product_images/' + product.image_name) }}"
+          alt="{{ product.name }}"
+          style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
+          onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'" />
+        <!-- Category Badge Overlay -->
+        <span class="sc-badge sc-badge--brand"
+          style="position: absolute; top: var(--sc-space-4); left: var(--sc-space-4);">
+          {{ product.category }}
+        </span>
+      </div>
+
+      <!-- Details Section -->
+      <div style="padding: var(--sc-space-10); display: flex; flex-direction: column; justify-content: center;">
+        <div style="margin-bottom: var(--sc-space-2);">
+          <span
+            style="font-size: var(--sc-text-xs); font-weight: var(--sc-weight-semibold); color: var(--sc-brand-400); text-transform: uppercase; letter-spacing: 0.05em;">
+            {{ product.category }}
+          </span>
+        </div>
+
+        <h1
+          style="font-size: var(--sc-text-3xl); font-weight: var(--sc-weight-bold); margin-bottom: var(--sc-space-4); line-height: var(--sc-leading-tight);">
+          {{ product.name }}
+        </h1>
+
+        <div style="
+          display: inline-flex; align-items: baseline; gap: var(--sc-space-2);
+          margin-bottom: var(--sc-space-6);
+          padding: var(--sc-space-3) var(--sc-space-5);
+          background: rgba(0, 188, 212, 0.08);
+          border-radius: var(--sc-radius-lg);
+          width: fit-content;
+        ">
+          <span style="font-size: var(--sc-text-2xl); font-weight: var(--sc-weight-bold); color: var(--sc-brand-400);">
+            ₹{{ product.price }}
+          </span>
+        </div>
+
+        <!-- Divider -->
+        <div style="height: 1px; background: var(--sc-border); margin-bottom: var(--sc-space-6);"></div>
+
+        <!-- Description -->
+        <div style="margin-bottom: var(--sc-space-8);">
+          <h6 style="margin-bottom: var(--sc-space-3);">Description</h6>
+          <p style="line-height: var(--sc-leading-relaxed); color: var(--sc-text-secondary);">
+            {{ product.description }}
+          </p>
+        </div>
+
+        <!-- Product Meta -->
+        <div style="
+          display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-space-4);
+          padding: var(--sc-space-5);
+          background: var(--sc-bg-surface);
+          border-radius: var(--sc-radius-lg);
+          border: 1px solid var(--sc-border);
+          margin-bottom: var(--sc-space-8);
+        ">
+          <div>
+            <p
+              style="font-size: var(--sc-text-xs); color: var(--sc-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--sc-space-1);">
+              Product ID</p>
+            <p
+              style="font-weight: var(--sc-weight-semibold); color: var(--sc-text-primary); font-size: var(--sc-text-sm); margin: 0;">
+              #{{ product.product_id }}</p>
+          </div>
+          <div>
+            <p
+              style="font-size: var(--sc-text-xs); color: var(--sc-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--sc-space-1);">
+              Category</p>
+            <p
+              style="font-weight: var(--sc-weight-semibold); color: var(--sc-text-primary); font-size: var(--sc-text-sm); margin: 0;">
+              {{ product.category }}</p>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display: flex; gap: var(--sc-space-3); flex-wrap: wrap;">
+          <a href="{{ url_for('update_product', product_id=product.product_id) }}" class="sc-btn sc-btn--primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            Edit Product
+          </a>
+          <a href="{{ url_for('product_list') }}" class="sc-btn sc-btn--ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to List
+          </a>
+          <a href="{{ url_for('delete_product', product_id=product.product_id) }}"
+            onclick="return confirm('Are you sure you want to delete \'{{ product.name }}\'? This action cannot be undone.');"
+            class="sc-btn sc-btn--xs"
+            style="background: rgba(239, 68, 68, 0.1); color: var(--sc-danger); border: 1px solid rgba(239, 68, 68, 0.2); margin-left: auto;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Delete
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    #product-detail-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+{% endblock %}

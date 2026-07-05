@@ -1,0 +1,81 @@
+{% extends "user/base.html" %}
+{% block title %}SmartCart - My Orders{% endblock %}
+{% block content %}
+<div class="sc-dashboard sc-animate-fade-in-up">
+  <div class="sc-dashboard__header">
+    <div>
+      <h2 style="margin-bottom: var(--sc-space-1);">📦 My Orders</h2>
+      <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
+        View your past orders and their details.
+      </p>
+    </div>
+  </div>
+
+  {% if orders|length == 0 %}
+  <div class="glass-card">
+    <div class="sc-empty">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="sc-empty__icon">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+      </svg>
+      <h3 class="sc-empty__title">No orders yet</h3>
+      <p class="sc-empty__text">You haven't placed any orders yet. Start exploring our products!</p>
+      <a href="/user/products" class="sc-btn"
+         style="background: linear-gradient(90deg, #00d2ff 0%, #8b5cf6 100%); 
+                box-shadow: 0 8px 24px rgba(0, 210, 255, 0.4); 
+                border: none; 
+                color: white; 
+                text-shadow: 0 1px 2px rgba(0,0,0,0.2); 
+                transition: transform 0.2s ease, box-shadow 0.2s ease;"
+         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 28px rgba(0, 210, 255, 0.6)';"
+         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(0, 210, 255, 0.4)';">
+         Start Shopping
+      </a>
+    </div>
+  </div>
+  {% else %}
+  
+  <div style="display: flex; flex-direction: column; gap: var(--sc-space-5); max-width: 900px; margin: 0 auto;">
+    {% for order in orders %}
+    <div class="glass-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; position: relative;">
+      
+      <div style="background: rgba(255,255,255,0.03); padding: var(--sc-space-4) var(--sc-space-6); border-bottom: 1px solid var(--sc-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sc-space-4);">
+        <div style="display: flex; gap: var(--sc-space-8); flex-wrap: wrap;">
+          <div>
+            <p style="font-size: var(--sc-text-xs); color: var(--sc-text-muted); text-transform: uppercase; margin: 0 0 var(--sc-space-1) 0; font-weight: var(--sc-weight-semibold);">Order Placed</p>
+            <p style="margin: 0; color: var(--sc-text-primary); font-size: var(--sc-text-sm);">{{ order.created_at.strftime('%d %b %Y') if order.created_at else order.created_at }}</p>
+          </div>
+          <div>
+            <p style="font-size: var(--sc-text-xs); color: var(--sc-text-muted); text-transform: uppercase; margin: 0 0 var(--sc-space-1) 0; font-weight: var(--sc-weight-semibold);">Total</p>
+            <p style="margin: 0; color: var(--sc-text-primary); font-size: var(--sc-text-sm); font-weight: var(--sc-weight-medium);">₹{{ order.amount }}</p>
+          </div>
+          <div>
+            <p style="font-size: var(--sc-text-xs); color: var(--sc-text-muted); text-transform: uppercase; margin: 0 0 var(--sc-space-1) 0; font-weight: var(--sc-weight-semibold);">Status</p>
+            <p style="margin: 0; color: var(--sc-success); font-size: var(--sc-text-sm); font-weight: var(--sc-weight-medium); text-transform: capitalize;">{{ order.payment_status }}</p>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <p style="font-size: var(--sc-text-xs); color: var(--sc-text-muted); text-transform: uppercase; margin: 0 0 var(--sc-space-1) 0; font-weight: var(--sc-weight-semibold);">Order #</p>
+          <p style="margin: 0; color: var(--sc-text-primary); font-size: var(--sc-text-sm); font-family: monospace;">{{ order.order_id }}</p>
+        </div>
+      </div>
+      
+      <div style="padding: var(--sc-space-5) var(--sc-space-6); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sc-space-4);">
+        <div style="color: var(--sc-text-secondary); font-size: var(--sc-text-sm);">
+          Razorpay Transaction ID: <span style="font-family: monospace; color: var(--sc-text-primary);">{{ order.razorpay_payment_id }}</span>
+        </div>
+        <div style="display: flex; gap: var(--sc-space-3);">
+          <a href="/user/download-invoice/{{ order.order_id }}" class="sc-btn sc-btn--ghost sc-btn--sm" style="border: 1px solid var(--sc-brand-500); color: var(--sc-brand-400);">Download Invoice</a>
+          <a href="/user/order-success/{{ order.order_id }}" class="sc-btn sc-btn--primary sc-btn--sm">View Order Details</a>
+        </div>
+      </div>
+      
+    </div>
+    {% endfor %}
+  </div>
+  
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,223 @@
+/* ==========================================================================
+   03-LAYOUT.CSS — Layout Primitives & Responsive Grid
+   ==========================================================================
+   Container, grid, and flex layout helpers. Responsive breakpoints:
+     sm:  640px
+     md:  768px
+     lg:  1024px
+     xl:  1200px
+     2xl: 1440px
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CONTAINER
+   -------------------------------------------------------------------------- */
+.sc-container {
+  width: 100%;
+  max-width: var(--sc-container-xl);
+  margin-inline: auto;
+  padding-inline: var(--sc-space-6);
+}
+
+.sc-container--sm  { max-width: var(--sc-container-sm); }
+.sc-container--md  { max-width: var(--sc-container-md); }
+.sc-container--lg  { max-width: var(--sc-container-lg); }
+.sc-container--2xl { max-width: var(--sc-container-2xl); }
+
+/* Legacy .container support (existing templates) */
+.container {
+  width: 100%;
+  max-width: var(--sc-container-xl);
+  margin-inline: auto;
+  padding: var(--sc-space-8);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   MAIN LAYOUT
+   -------------------------------------------------------------------------- */
+.sc-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.sc-main {
+  flex: 1;
+  padding-block: var(--sc-space-8);
+}
+
+/* --------------------------------------------------------------------------
+   GRID SYSTEM
+   -------------------------------------------------------------------------- */
+.sc-grid {
+  display: grid;
+  gap: var(--sc-space-6);
+}
+
+/* Auto-fill responsive grid */
+.sc-grid--auto {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.sc-grid--auto-sm {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+/* Explicit column counts */
+.sc-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.sc-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.sc-grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+/* Responsive fallbacks */
+@media (max-width: 1024px) {
+  .sc-grid--4 { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .sc-grid--3,
+  .sc-grid--4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .sc-grid--2,
+  .sc-grid--3,
+  .sc-grid--4 { grid-template-columns: 1fr; }
+}
+
+/* --------------------------------------------------------------------------
+   FLEX HELPERS
+   -------------------------------------------------------------------------- */
+.sc-flex         { display: flex; }
+.sc-flex--col    { flex-direction: column; }
+.sc-flex--wrap   { flex-wrap: wrap; }
+.sc-flex--center { align-items: center; justify-content: center; }
+.sc-flex--between { justify-content: space-between; align-items: center; }
+.sc-flex--start  { align-items: flex-start; }
+.sc-flex--end    { justify-content: flex-end; }
+.sc-flex--gap-2  { gap: var(--sc-space-2); }
+.sc-flex--gap-3  { gap: var(--sc-space-3); }
+.sc-flex--gap-4  { gap: var(--sc-space-4); }
+.sc-flex--gap-6  { gap: var(--sc-space-6); }
+.sc-flex--gap-8  { gap: var(--sc-space-8); }
+
+/* --------------------------------------------------------------------------
+   SECTION
+   -------------------------------------------------------------------------- */
+.sc-section {
+  padding-block: var(--sc-space-16);
+}
+
+.sc-section--sm {
+  padding-block: var(--sc-space-8);
+}
+
+.sc-section--hero {
+  padding-block: var(--sc-space-20) var(--sc-space-16);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   SIDEBAR LAYOUT (Dashboard / Admin)
+   -------------------------------------------------------------------------- */
+.sc-layout-sidebar {
+  display: grid;
+  grid-template-columns: var(--sc-sidebar-width) 1fr;
+  min-height: calc(100vh - var(--sc-nav-height));
+}
+
+.sc-sidebar {
+  background: var(--sc-bg-surface);
+  border-right: 1px solid var(--sc-border);
+  padding: var(--sc-space-6);
+  position: sticky;
+  top: var(--sc-nav-height);
+  height: calc(100vh - var(--sc-nav-height));
+  overflow-y: auto;
+}
+
+.sc-sidebar__content {
+  flex: 1;
+  padding: var(--sc-space-8);
+  overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+  .sc-layout-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-sidebar {
+    position: fixed;
+    left: 0;
+    top: var(--sc-nav-height);
+    bottom: 0;
+    width: var(--sc-sidebar-width);
+    z-index: var(--sc-z-overlay);
+    transform: translateX(-100%);
+    transition: transform var(--sc-duration-normal) var(--sc-ease-default);
+  }
+
+  .sc-sidebar.is-open {
+    transform: translateX(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   TWO-COLUMN SPLIT (Auth pages, marketing sections)
+   -------------------------------------------------------------------------- */
+.sc-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.sc-split__media {
+  position: relative;
+  overflow: hidden;
+  background: var(--sc-gradient-brand);
+}
+
+.sc-split__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--sc-space-12);
+}
+
+@media (max-width: 768px) {
+  .sc-split {
+    grid-template-columns: 1fr;
+  }
+
+  .sc-split__media {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE PADDING
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .sc-container,
+  .container {
+    padding-inline: var(--sc-space-4);
+  }
+
+  .sc-section {
+    padding-block: var(--sc-space-10);
+  }
+
+  .sc-section--hero {
+    padding-block: var(--sc-space-12) var(--sc-space-8);
+  }
+}
+
+@media (max-width: 480px) {
+  .sc-container,
+  .container {
+    padding-inline: var(--sc-space-3);
+  }
+}

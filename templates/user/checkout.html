@@ -1,0 +1,172 @@
+{% extends "user/base.html" %}
+{% block title %}SmartCart - Checkout{% endblock %}
+{% block content %}
+<div class="sc-dashboard sc-animate-fade-in-up">
+  <div class="sc-dashboard__header">
+    <div>
+      <h2 style="margin-bottom: var(--sc-space-1);">Checkout</h2>
+      <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
+        Complete your order.
+      </p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--sc-space-6);" id="checkout-grid">
+    
+    <!-- Address Section -->
+    <div class="glass-card" style="height: fit-content;">
+      <h3 style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-semibold); margin-bottom: var(--sc-space-4); color: var(--sc-text-primary);">Shipping Address</h3>
+      
+      {% if display_address %}
+      <div id="address-display" style="margin-bottom: var(--sc-space-6);">
+        <div style="padding: var(--sc-space-4); border: 1px solid var(--sc-border); border-radius: var(--sc-radius-md); background: var(--sc-bg-surface-alt); margin-bottom: var(--sc-space-4);">
+          <p style="margin: 0; font-weight: var(--sc-weight-medium); color: var(--sc-text-primary); margin-bottom: var(--sc-space-2);">{{ parsed_address.full_name }} <span style="color: var(--sc-text-muted); font-weight: normal; margin-left: var(--sc-space-2);">{{ parsed_address.phone }}</span></p>
+          <p style="margin: 0; color: var(--sc-text-secondary); line-height: 1.5;">
+            {{ parsed_address.address }}<br>
+            {% if parsed_address.landmark %}{{ parsed_address.landmark }}<br>{% endif %}
+            {{ parsed_address.city }}, {{ parsed_address.district }}<br>
+            {{ parsed_address.state }}, {{ parsed_address.country }} - {{ parsed_address.pincode }}
+          </p>
+        </div>
+        <button type="button" class="sc-btn sc-btn--ghost sc-btn--sm" onclick="toggleAddressForm()">Change Address</button>
+      </div>
+      {% endif %}
+
+      <div id="address-form" style="{% if display_address %}display: none;{% endif %}">
+        <form method="POST" action="/user/add-address">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-space-4);">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" name="full_name" value="{{ parsed_address.full_name or '' }}" required placeholder="John Doe" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="text" name="phone" value="{{ parsed_address.phone or '' }}" required placeholder="1234567890" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Address (House No, Building, Street)</label>
+            <input type="text" name="address" value="{{ parsed_address.address or '' }}" required placeholder="123 Main St" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Landmark (Optional)</label>
+            <input type="text" name="landmark" value="{{ parsed_address.landmark or '' }}" placeholder="Near XYZ..." class="form-control" />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-space-4);">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" name="city" value="{{ parsed_address.city or '' }}" required placeholder="City" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label>District</label>
+              <input type="text" name="district" value="{{ parsed_address.district or '' }}" required placeholder="District" class="form-control" />
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-space-4);">
+            <div class="form-group">
+              <label>State</label>
+              <input type="text" name="state" value="{{ parsed_address.state or '' }}" required placeholder="State" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label>Country</label>
+              <input type="text" name="country" value="{{ parsed_address.country or '' }}" required placeholder="Country" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Pincode</label>
+            <input type="text" name="pincode" value="{{ parsed_address.pincode or '' }}" required placeholder="123456" class="form-control" />
+          </div>
+          
+          <div style="margin-top: var(--sc-space-4); display: flex; gap: var(--sc-space-3);">
+            <button type="submit" class="sc-btn sc-btn--primary">Save Address</button>
+            {% if display_address %}
+            <button type="button" class="sc-btn sc-btn--ghost" onclick="toggleAddressForm()">Cancel</button>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Order Summary Section -->
+    <div class="glass-card" style="height: fit-content; padding: var(--sc-space-6);">
+      <h3 style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-semibold); margin-bottom: var(--sc-space-4); color: var(--sc-text-primary);">Order Summary</h3>
+      
+      <div style="margin-bottom: var(--sc-space-6); max-height: 300px; overflow-y: auto; padding-right: var(--sc-space-2);">
+        {% for item in checkout_items %}
+        <div style="display: flex; gap: var(--sc-space-4); margin-bottom: var(--sc-space-4); padding-bottom: var(--sc-space-4); border-bottom: 1px solid var(--sc-border);">
+          <div style="width: 64px; height: 64px; border-radius: var(--sc-radius-md); overflow: hidden; border: 1px solid var(--sc-border); flex-shrink: 0; background: var(--sc-bg-surface-alt);">
+            {% if item.image %}
+            <img src="{{ url_for('static', filename='uploads/product_images/' + item.image) }}" alt="Product" style="width: 100%; height: 100%; object-fit: cover;" />
+            {% endif %}
+          </div>
+          <div style="flex-grow: 1;">
+            <p style="font-weight: var(--sc-weight-medium); color: var(--sc-text-primary); margin: 0; margin-bottom: var(--sc-space-1); font-size: var(--sc-text-sm);">
+              {{ item.name or 'Product' }}
+            </p>
+            <div style="display: flex; justify-content: space-between; color: var(--sc-text-muted); font-size: var(--sc-text-xs);">
+              <span>Qty: {{ item.quantity }}</span>
+              <span style="font-weight: var(--sc-weight-medium); color: var(--sc-text-primary);">₹{{ item.price * item.quantity }}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; margin-bottom: var(--sc-space-4);">
+        <span style="color: var(--sc-text-muted);">Subtotal</span>
+        <span style="font-weight: var(--sc-weight-medium); color: var(--sc-text-primary);">₹{{ grand_total }}</span>
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; margin-bottom: var(--sc-space-4);">
+        <span style="color: var(--sc-text-muted);">Shipping</span>
+        <span style="font-weight: var(--sc-weight-medium); color: var(--sc-success);">Free</span>
+      </div>
+      
+      <div style="height: 1px; background: var(--sc-border); margin: var(--sc-space-4) 0;"></div>
+      
+      <div style="display: flex; justify-content: space-between; margin-bottom: var(--sc-space-6);">
+        <span style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-bold); color: var(--sc-text-primary);">Total</span>
+        <span style="font-size: var(--sc-text-2xl); font-weight: var(--sc-weight-bold); color: var(--sc-brand-400);">₹{{ grand_total }}</span>
+      </div>
+      
+      {% if display_address %}
+      <a href="/user/pay" class="sc-btn sc-btn--primary sc-btn--block" style="margin-bottom: var(--sc-space-3);">
+        Continue to Payment
+      </a>
+      {% else %}
+      <button disabled class="sc-btn sc-btn--primary sc-btn--block" style="margin-bottom: var(--sc-space-3); opacity: 0.5; cursor: not-allowed;">
+        Please Add Address
+      </button>
+      {% endif %}
+      <a href="/user/cart" class="sc-btn sc-btn--ghost sc-btn--block">
+        Return to Cart
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 992px) {
+    #checkout-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  function toggleAddressForm() {
+    const display = document.getElementById('address-display');
+    const form = document.getElementById('address-form');
+    if (form.style.display === 'none') {
+      form.style.display = 'block';
+      if(display) display.style.display = 'none';
+    } else {
+      form.style.display = 'none';
+      if(display) display.style.display = 'block';
+    }
+  }
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "user/base.html" %}
+{% block title %}SmartCart - Order Successful{% endblock %}
+{% block content %}
+<div class="sc-dashboard sc-animate-fade-in-up">
+  <div class="sc-dashboard__header" style="text-align: center; margin-bottom: var(--sc-space-8);">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--sc-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: var(--sc-space-4);">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <h2 style="color: var(--sc-success); margin-bottom: var(--sc-space-2);">Your Order is Confirmed!</h2>
+      <p style="color: var(--sc-text-muted); font-size: var(--sc-text-lg);">
+        Thank you for shopping with SmartCart.
+      </p>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-space-6); max-width: 900px; margin: 0 auto;">
+    
+    <div class="glass-card" style="height: fit-content;">
+      <h3 style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-semibold); margin-bottom: var(--sc-space-4); color: var(--sc-text-primary);">Order Details</h3>
+      <div style="display: flex; flex-direction: column; gap: var(--sc-space-3); color: var(--sc-text-secondary); line-height: 1.6;">
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--sc-text-muted);">Order ID</span>
+          <span style="font-weight: var(--sc-weight-medium); color: var(--sc-text-primary);">#{{ order.order_id }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--sc-text-muted);">Payment ID</span>
+          <span style="font-weight: var(--sc-weight-medium); color: var(--sc-text-primary);">{{ order.razorpay_payment_id }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--sc-text-muted);">Order Date</span>
+          <span style="font-weight: var(--sc-weight-medium); color: var(--sc-text-primary);">{{ order.created_at }}</span>
+        </div>
+        <div style="height: 1px; background: var(--sc-border); margin: var(--sc-space-2) 0;"></div>
+        <div style="display: flex; justify-content: space-between; font-size: var(--sc-text-lg);">
+          <span style="color: var(--sc-text-primary); font-weight: var(--sc-weight-bold);">Total Paid</span>
+          <span style="font-weight: var(--sc-weight-bold); color: var(--sc-brand-400);">₹{{ order.amount }}</span>
+        </div>
+      </div>
+      
+      <div style="margin-top: var(--sc-space-8); display: flex; gap: var(--sc-space-3); flex-direction: column;">
+        <a href="/user/my-orders" class="sc-btn sc-btn--primary sc-btn--block">View My Orders</a>
+        <a href="/user/products" class="sc-btn sc-btn--ghost sc-btn--block">Continue Shopping</a>
+      </div>
+    </div>
+
+    <div class="glass-card" style="height: fit-content; padding: 0; overflow: hidden;">
+      <h3 style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-semibold); padding: var(--sc-space-6) var(--sc-space-6) var(--sc-space-4); margin: 0; color: var(--sc-text-primary);">Order Summary</h3>
+      <table class="sc-table" style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--sc-border-strong); background: rgba(0,0,0,0.2);">
+            <th style="padding: var(--sc-space-3) var(--sc-space-5); text-align: left; font-size: var(--sc-text-xs); color: var(--sc-text-muted); text-transform: uppercase;">Product</th>
+            <th style="padding: var(--sc-space-3) var(--sc-space-5); text-align: center; font-size: var(--sc-text-xs); color: var(--sc-text-muted); text-transform: uppercase;">Qty</th>
+            <th style="padding: var(--sc-space-3) var(--sc-space-5); text-align: right; font-size: var(--sc-text-xs); color: var(--sc-text-muted); text-transform: uppercase;">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for it in items %}
+          <tr style="border-bottom: 1px solid var(--sc-border);">
+            <td style="padding: var(--sc-space-4) var(--sc-space-5); color: var(--sc-text-primary); font-weight: var(--sc-weight-medium);">{{ it.product_name }}</td>
+            <td style="padding: var(--sc-space-4) var(--sc-space-5); text-align: center; color: var(--sc-text-secondary);">{{ it.quantity }}</td>
+            <td style="padding: var(--sc-space-4) var(--sc-space-5); text-align: right; color: var(--sc-text-primary); font-weight: var(--sc-weight-medium);">₹{{ it.quantity * it.price }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div style="padding: var(--sc-space-4) var(--sc-space-6); background: rgba(0,0,0,0.1); border-top: 1px solid var(--sc-border);">
+        <a href="/user/download-invoice/{{ order.order_id }}" class="sc-btn sc-btn--ghost sc-btn--block" style="border: 1px solid var(--sc-brand-500); color: var(--sc-brand-400);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download Invoice (PDF)
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    .sc-dashboard > div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+{% endblock %}

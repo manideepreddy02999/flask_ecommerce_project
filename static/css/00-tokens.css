@@ -1,0 +1,288 @@
+/* ==========================================================================
+   00-TOKENS.CSS — SmartCart Design System Foundation
+   ==========================================================================
+   Single source of truth for all design tokens.
+   Change values here to re-theme the entire application.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   COLOR PALETTE — Dark Mode (Default)
+   -------------------------------------------------------------------------- */
+:root {
+  /* ---- Brand ---- */
+  --sc-brand-50:  #e0f7fa;
+  --sc-brand-100: #b2ebf2;
+  --sc-brand-200: #80deea;
+  --sc-brand-300: #4dd0e1;
+  --sc-brand-400: #26c6da;
+  --sc-brand-500: #00bcd4;   /* primary brand */
+  --sc-brand-600: #00acc1;
+  --sc-brand-700: #0097a7;
+  --sc-brand-800: #00838f;
+  --sc-brand-900: #006064;
+
+  /* ---- Accent / Secondary ---- */
+  --sc-accent-50:  #ede7f6;
+  --sc-accent-100: #d1c4e9;
+  --sc-accent-200: #b39ddb;
+  --sc-accent-300: #9575cd;
+  --sc-accent-400: #7e57c2;
+  --sc-accent-500: #7c3aed;  /* secondary accent */
+  --sc-accent-600: #6d28d9;
+  --sc-accent-700: #5b21b6;
+  --sc-accent-800: #4c1d95;
+  --sc-accent-900: #3b0764;
+
+  /* ---- Neutrals ---- */
+  --sc-neutral-0:   #ffffff;
+  --sc-neutral-50:  #fafafa;
+  --sc-neutral-100: #f4f4f5;
+  --sc-neutral-200: #e4e4e7;
+  --sc-neutral-300: #d4d4d8;
+  --sc-neutral-400: #a1a1aa;
+  --sc-neutral-500: #71717a;
+  --sc-neutral-600: #52525b;
+  --sc-neutral-700: #3f3f46;
+  --sc-neutral-800: #27272a;
+  --sc-neutral-900: #18181b;
+  --sc-neutral-950: #0f0f12;
+
+  /* ---- Semantic ---- */
+  --sc-success-light: #dcfce7;
+  --sc-success:       #22c55e;
+  --sc-success-dark:  #15803d;
+
+  --sc-warning-light: #fef9c3;
+  --sc-warning:       #eab308;
+  --sc-warning-dark:  #a16207;
+
+  --sc-danger-light:  #fee2e2;
+  --sc-danger:        #ef4444;
+  --sc-danger-dark:   #b91c1c;
+
+  --sc-info-light:    #dbeafe;
+  --sc-info:          #3b82f6;
+  --sc-info-dark:     #1d4ed8;
+
+  /* --------------------------------------------------------------------------
+     THEME-RESOLVED ALIASES  (Dark mode = default)
+     -------------------------------------------------------------------------- */
+  --sc-bg-body:        var(--sc-neutral-950);
+  --sc-bg-surface:     var(--sc-neutral-900);
+  --sc-bg-surface-alt: var(--sc-neutral-800);
+  --sc-bg-elevated:    var(--sc-neutral-700);
+  --sc-bg-overlay:     rgba(0, 0, 0, 0.6);
+
+  --sc-text-primary:   var(--sc-neutral-50);
+  --sc-text-secondary: var(--sc-neutral-400);
+  --sc-text-muted:     var(--sc-neutral-500);
+  --sc-text-inverse:   var(--sc-neutral-900);
+
+  --sc-border:         rgba(255, 255, 255, 0.08);
+  --sc-border-strong:  rgba(255, 255, 255, 0.16);
+  --sc-ring:           rgba(0, 188, 212, 0.35);
+
+  --sc-gradient-brand: linear-gradient(135deg, var(--sc-brand-500), var(--sc-accent-500));
+  --sc-gradient-surface: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+
+  /* --------------------------------------------------------------------------
+     TYPOGRAPHY
+     -------------------------------------------------------------------------- */
+  --sc-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                  Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --sc-font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code',
+                  'Consolas', monospace;
+
+  /* Modular scale — 1.250 (Major Third) */
+  --sc-text-xs:   0.75rem;     /* 12px */
+  --sc-text-sm:   0.875rem;    /* 14px */
+  --sc-text-base: 1rem;        /* 16px */
+  --sc-text-md:   1.125rem;    /* 18px */
+  --sc-text-lg:   1.25rem;     /* 20px */
+  --sc-text-xl:   1.5rem;      /* 24px */
+  --sc-text-2xl:  1.875rem;    /* 30px */
+  --sc-text-3xl:  2.25rem;     /* 36px */
+  --sc-text-4xl:  3rem;        /* 48px */
+  --sc-text-5xl:  3.75rem;     /* 60px */
+
+  --sc-leading-tight:  1.25;
+  --sc-leading-normal: 1.5;
+  --sc-leading-relaxed: 1.75;
+
+  --sc-tracking-tight:  -0.025em;
+  --sc-tracking-normal:  0;
+  --sc-tracking-wide:    0.025em;
+  --sc-tracking-wider:   0.05em;
+
+  --sc-weight-light:    300;
+  --sc-weight-normal:   400;
+  --sc-weight-medium:   500;
+  --sc-weight-semibold: 600;
+  --sc-weight-bold:     700;
+  --sc-weight-black:    900;
+
+  /* --------------------------------------------------------------------------
+     SPACING SCALE (8px base)
+     -------------------------------------------------------------------------- */
+  --sc-space-0:   0;
+  --sc-space-px:  1px;
+  --sc-space-0-5: 0.125rem;   /* 2px  */
+  --sc-space-1:   0.25rem;    /* 4px  */
+  --sc-space-1-5: 0.375rem;   /* 6px  */
+  --sc-space-2:   0.5rem;     /* 8px  */
+  --sc-space-3:   0.75rem;    /* 12px */
+  --sc-space-4:   1rem;       /* 16px */
+  --sc-space-5:   1.25rem;    /* 20px */
+  --sc-space-6:   1.5rem;     /* 24px */
+  --sc-space-8:   2rem;       /* 32px */
+  --sc-space-10:  2.5rem;     /* 40px */
+  --sc-space-12:  3rem;       /* 48px */
+  --sc-space-16:  4rem;       /* 64px */
+  --sc-space-20:  5rem;       /* 80px */
+  --sc-space-24:  6rem;       /* 96px */
+
+  /* --------------------------------------------------------------------------
+     BORDER RADII
+     -------------------------------------------------------------------------- */
+  --sc-radius-none: 0;
+  --sc-radius-sm:   4px;
+  --sc-radius-md:   8px;
+  --sc-radius-lg:   12px;
+  --sc-radius-xl:   16px;
+  --sc-radius-2xl:  24px;
+  --sc-radius-full: 9999px;
+
+  /* --------------------------------------------------------------------------
+     SHADOWS
+     -------------------------------------------------------------------------- */
+  --sc-shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.3);
+  --sc-shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --sc-shadow-md:  0 4px 6px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+  --sc-shadow-lg:  0 10px 15px rgba(0, 0, 0, 0.5), 0 4px 6px rgba(0, 0, 0, 0.3);
+  --sc-shadow-xl:  0 20px 25px rgba(0, 0, 0, 0.5), 0 8px 10px rgba(0, 0, 0, 0.3);
+  --sc-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.6);
+  --sc-shadow-glow: 0 0 20px rgba(0, 188, 212, 0.3),
+                    0 0 40px rgba(0, 188, 212, 0.15);
+  --sc-shadow-glow-accent: 0 0 20px rgba(124, 58, 237, 0.3),
+                           0 0 40px rgba(124, 58, 237, 0.15);
+
+  /* --------------------------------------------------------------------------
+     TRANSITIONS & ANIMATION
+     -------------------------------------------------------------------------- */
+  --sc-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --sc-ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --sc-ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --sc-ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --sc-duration-fast:   150ms;
+  --sc-duration-normal: 250ms;
+  --sc-duration-slow:   400ms;
+
+  --sc-transition-colors: color var(--sc-duration-normal) var(--sc-ease-default),
+                          background-color var(--sc-duration-normal) var(--sc-ease-default),
+                          border-color var(--sc-duration-normal) var(--sc-ease-default);
+  --sc-transition-transform: transform var(--sc-duration-normal) var(--sc-ease-default);
+  --sc-transition-all: all var(--sc-duration-normal) var(--sc-ease-default);
+
+  /* --------------------------------------------------------------------------
+     Z-INDEX LAYERS
+     -------------------------------------------------------------------------- */
+  --sc-z-dropdown:  100;
+  --sc-z-sticky:    200;
+  --sc-z-overlay:   300;
+  --sc-z-modal:     400;
+  --sc-z-popover:   500;
+  --sc-z-toast:     600;
+  --sc-z-max:       9999;
+
+  /* --------------------------------------------------------------------------
+     LAYOUT
+     -------------------------------------------------------------------------- */
+  --sc-container-sm:  640px;
+  --sc-container-md:  768px;
+  --sc-container-lg:  1024px;
+  --sc-container-xl:  1200px;
+  --sc-container-2xl: 1440px;
+
+  --sc-sidebar-width: 280px;
+  --sc-nav-height:    72px;
+}
+
+
+/* --------------------------------------------------------------------------
+   LIGHT MODE OVERRIDES
+   --------------------------------------------------------------------------
+   Activate via:
+     <html data-theme="light">          (JS toggle)
+     @media (prefers-color-scheme: light) (automatic)
+   -------------------------------------------------------------------------- */
+[data-theme="light"],
+:root:not([data-theme="dark"]) {
+  /* Light mode only applies if system preference is light AND
+     no explicit dark override. We use a media-query wrapper
+     so dark remains default without JS. */
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --sc-bg-body:        var(--sc-neutral-50);
+    --sc-bg-surface:     var(--sc-neutral-0);
+    --sc-bg-surface-alt: var(--sc-neutral-100);
+    --sc-bg-elevated:    var(--sc-neutral-0);
+    --sc-bg-overlay:     rgba(0, 0, 0, 0.3);
+
+    --sc-text-primary:   var(--sc-neutral-900);
+    --sc-text-secondary: var(--sc-neutral-600);
+    --sc-text-muted:     var(--sc-neutral-500);
+    --sc-text-inverse:   var(--sc-neutral-50);
+
+    --sc-border:         rgba(0, 0, 0, 0.08);
+    --sc-border-strong:  rgba(0, 0, 0, 0.16);
+
+    --sc-gradient-surface: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.4) 100%
+    );
+
+    --sc-shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.05);
+    --sc-shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --sc-shadow-md:  0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --sc-shadow-lg:  0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+    --sc-shadow-xl:  0 20px 25px rgba(0, 0, 0, 0.1), 0 8px 10px rgba(0, 0, 0, 0.04);
+    --sc-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+  }
+}
+
+[data-theme="light"] {
+  --sc-bg-body:        var(--sc-neutral-50);
+  --sc-bg-surface:     var(--sc-neutral-0);
+  --sc-bg-surface-alt: var(--sc-neutral-100);
+  --sc-bg-elevated:    var(--sc-neutral-0);
+  --sc-bg-overlay:     rgba(0, 0, 0, 0.3);
+
+  --sc-text-primary:   var(--sc-neutral-900);
+  --sc-text-secondary: var(--sc-neutral-600);
+  --sc-text-muted:     var(--sc-neutral-500);
+  --sc-text-inverse:   var(--sc-neutral-50);
+
+  --sc-border:         rgba(0, 0, 0, 0.08);
+  --sc-border-strong:  rgba(0, 0, 0, 0.16);
+
+  --sc-gradient-surface: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+
+  --sc-shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.05);
+  --sc-shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --sc-shadow-md:  0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --sc-shadow-lg:  0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --sc-shadow-xl:  0 20px 25px rgba(0, 0, 0, 0.1), 0 8px 10px rgba(0, 0, 0, 0.04);
+  --sc-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+}

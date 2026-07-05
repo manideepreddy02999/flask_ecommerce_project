@@ -1,0 +1,76 @@
+{% extends "user/base.html" %}
+{% block title %}SmartCart - Payment{% endblock %}
+{% block content %}
+<div class="sc-dashboard sc-animate-fade-in-up" style="display: flex; justify-content: center; padding-top: var(--sc-space-12);">
+  <div class="glass-card" style="text-align: center; max-width: 500px; width: 100%;">
+    <div style="margin-bottom: var(--sc-space-6);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--sc-brand-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect>
+        <line x1="2" y1="10" x2="22" y2="10"></line>
+      </svg>
+    </div>
+    <h2 style="margin-bottom: var(--sc-space-2);">Initializing Payment...</h2>
+    <p style="color: var(--sc-text-muted); margin-bottom: var(--sc-space-6);">Please wait while we connect to Razorpay securely.</p>
+    
+    <button id="rzp-button" class="sc-btn sc-btn--primary sc-btn--block" style="display: none;">
+      Open Payment Window
+    </button>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "{{ key_id }}",
+    "amount": "{{ amount * 100 }}",
+    "currency": "INR",
+    "name": "SmartCart",
+    "description": "Order Payment",
+    "order_id": "{{ order_id }}",
+    "handler": function (response){
+        // Build a small form and POST to server for verification
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/verify-payment";
+
+        var fields = {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature
+        };
+
+        for (var name in fields) {
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = name;
+            input.value = fields[name];
+            form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    },
+    "modal": {
+        "ondismiss": function(){
+            // If the user closes the modal without paying, let them manually open it again or go back
+            document.getElementById('rzp-button').style.display = 'block';
+            document.getElementById('rzp-button').innerText = 'Retry Payment';
+            document.querySelector('h2').innerText = 'Payment Cancelled';
+            document.querySelector('p').innerText = 'You closed the payment window. You can retry or go back to checkout.';
+        }
+    }
+};
+
+var rzp = new Razorpay(options);
+
+// Auto-open on page load
+window.onload = function() {
+    rzp.open();
+};
+
+document.getElementById('rzp-button').onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+}
+</script>
+{% endblock %}

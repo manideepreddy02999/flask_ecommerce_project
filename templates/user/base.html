@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SmartCart — Your premium shopping experience.">
+    <title>{% block title %}SmartCart{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/smartcart.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <!-- <a href="#main-content" class="sc-skip-link">Skip to main content</a> -->
+
+    <nav class="sc-nav sc-nav--glass" id="main-nav" role="navigation" aria-label="Main navigation">
+        <div class="sc-nav__brand">
+            <a href="{{ url_for('user_index') }}">Smart<span class="sc-u-text-brand">Cart</span></a>
+        </div>
+
+        <button class="sc-nav__toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="sc-nav__links" id="nav-links">
+            {% if session.get('user_id') %}
+            <a href="{{ url_for('user_dashboard') }}" class="sc-nav__link">Home</a>
+            <a href="{{ url_for('view_cart') }}" class="sc-nav__link">Cart</a>
+            <a href="{{ url_for('my_orders') }}" class="sc-nav__link">Orders</a>
+            <a href="{{ url_for('user_profile') }}" class="sc-nav__link">Profile</a>
+            <a href="{{ url_for('user_logout') }}" class="sc-btn sc-btn--ghost sc-btn--sm"
+                style="transition: all 0.2s ease;"
+                onmouseenter="this.style.borderColor='var(--sc-danger)'; this.style.color='var(--sc-danger)'; this.style.background='rgba(239,68,68,0.08)';"
+                onmouseleave="this.style.borderColor=''; this.style.color=''; this.style.background='';">Logout</a>
+            {% else %}
+            <a href="{{ url_for('user_signin') }}" class="sc-btn sc-btn--ghost sc-btn--sm">Sign In</a>
+            <a href="{{ url_for('user_signup') }}" class="sc-btn sc-btn--primary sc-btn--sm">Sign Up</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container" id="main-content" role="main">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-container" role="alert">
+            {% for category, message in messages %}
+            <div class="sc-alert sc-alert--{{ category if category != 'message' else 'info' }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Main Content Block -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Mobile Nav Toggle Script -->
+    <script>
+        (function () {
+            const toggle = document.getElementById('nav-toggle');
+            const links = document.getElementById('nav-links');
+            if (toggle && links) {
+                toggle.addEventListener('click', function () {
+                    const isOpen = links.classList.toggle('is-open');
+                    toggle.setAttribute('aria-expanded', isOpen);
+                });
+            }
+
+            // Navbar scroll effect
+            const nav = document.getElementById('main-nav');
+            if (nav) {
+                window.addEventListener('scroll', function () {
+                    nav.classList.toggle('is-scrolled', window.scrollY > 20);
+                }, { passive: true });
+            }
+
+            // Auto-dismiss flash messages after 5 seconds
+            document.querySelectorAll('.sc-alert, .alert').forEach(function (alert) {
+                setTimeout(function () {
+                    alert.style.transition = 'opacity 0.4s ease, transform 0.4s ease, margin 0.4s ease';
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-8px)';
+                    alert.style.marginBottom = '0';
+                    alert.style.paddingBlock = '0';
+                    alert.style.overflow = 'hidden';
+                    setTimeout(function () { alert.remove(); }, 400);
+                }, 5000);
+            });
+        })();
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

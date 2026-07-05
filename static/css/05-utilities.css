@@ -1,0 +1,197 @@
+/* ==========================================================================
+   05-UTILITIES.CSS — Utility Classes & Helpers
+   ==========================================================================
+   Single-purpose utility classes. Use sparingly — prefer component classes.
+   Naming: .sc-u-{property}-{value}  (short form for common ones)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   DISPLAY
+   -------------------------------------------------------------------------- */
+.sc-u-block         { display: block; }
+.sc-u-inline-block  { display: inline-block; }
+.sc-u-inline        { display: inline; }
+.sc-u-flex          { display: flex; }
+.sc-u-grid          { display: grid; }
+.sc-u-hidden,
+.hidden             { display: none !important; }
+.sc-u-visible       { visibility: visible; }
+.sc-u-invisible     { visibility: hidden; }
+
+/* Screen-reader only */
+.sc-u-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   TEXT ALIGNMENT
+   -------------------------------------------------------------------------- */
+.sc-u-text-left,
+.text-left    { text-align: left; }
+.sc-u-text-center,
+.text-center  { text-align: center; }
+.sc-u-text-right  { text-align: right; }
+
+/* --------------------------------------------------------------------------
+   TEXT COLOR
+   -------------------------------------------------------------------------- */
+.sc-u-text-primary   { color: var(--sc-text-primary); }
+.sc-u-text-secondary { color: var(--sc-text-secondary); }
+.sc-u-text-muted     { color: var(--sc-text-muted); }
+.sc-u-text-brand,
+.text-accent         { color: var(--sc-brand-400); }
+.sc-u-text-success   { color: var(--sc-success); }
+.sc-u-text-danger    { color: var(--sc-danger); }
+.sc-u-text-warning   { color: var(--sc-warning); }
+
+/* --------------------------------------------------------------------------
+   FONT WEIGHT
+   -------------------------------------------------------------------------- */
+.sc-u-font-light     { font-weight: var(--sc-weight-light); }
+.sc-u-font-normal    { font-weight: var(--sc-weight-normal); }
+.sc-u-font-medium    { font-weight: var(--sc-weight-medium); }
+.sc-u-font-semibold  { font-weight: var(--sc-weight-semibold); }
+.sc-u-font-bold      { font-weight: var(--sc-weight-bold); }
+
+/* --------------------------------------------------------------------------
+   FONT SIZE
+   -------------------------------------------------------------------------- */
+.sc-u-text-xs  { font-size: var(--sc-text-xs); }
+.sc-u-text-sm  { font-size: var(--sc-text-sm); }
+.sc-u-text-base { font-size: var(--sc-text-base); }
+.sc-u-text-lg  { font-size: var(--sc-text-lg); }
+.sc-u-text-xl  { font-size: var(--sc-text-xl); }
+.sc-u-text-2xl { font-size: var(--sc-text-2xl); }
+.sc-u-text-3xl { font-size: var(--sc-text-3xl); }
+
+/* --------------------------------------------------------------------------
+   SPACING — Margin
+   -------------------------------------------------------------------------- */
+.sc-u-m-0   { margin: 0; }
+.sc-u-m-auto { margin: auto; }
+.sc-u-mx-auto { margin-inline: auto; }
+
+.sc-u-mt-0   { margin-top: 0; }
+.sc-u-mt-2   { margin-top: var(--sc-space-2); }
+.sc-u-mt-4,
+.mt-4        { margin-top: var(--sc-space-4); }
+.sc-u-mt-6   { margin-top: var(--sc-space-6); }
+.sc-u-mt-8   { margin-top: var(--sc-space-8); }
+.sc-u-mt-12  { margin-top: var(--sc-space-12); }
+.sc-u-mt-16  { margin-top: var(--sc-space-16); }
+
+.sc-u-mb-0   { margin-bottom: 0; }
+.sc-u-mb-2   { margin-bottom: var(--sc-space-2); }
+.sc-u-mb-4,
+.mb-4        { margin-bottom: var(--sc-space-4); }
+.sc-u-mb-6   { margin-bottom: var(--sc-space-6); }
+.sc-u-mb-8   { margin-bottom: var(--sc-space-8); }
+
+.sc-u-ml-auto { margin-left: auto; }
+.sc-u-mr-auto { margin-right: auto; }
+
+/* --------------------------------------------------------------------------
+   SPACING — Padding
+   -------------------------------------------------------------------------- */
+.sc-u-p-0   { padding: 0; }
+.sc-u-p-2   { padding: var(--sc-space-2); }
+.sc-u-p-4   { padding: var(--sc-space-4); }
+.sc-u-p-6   { padding: var(--sc-space-6); }
+.sc-u-p-8   { padding: var(--sc-space-8); }
+
+.sc-u-px-4  { padding-inline: var(--sc-space-4); }
+.sc-u-px-6  { padding-inline: var(--sc-space-6); }
+.sc-u-py-4  { padding-block: var(--sc-space-4); }
+.sc-u-py-8  { padding-block: var(--sc-space-8); }
+
+/* --------------------------------------------------------------------------
+   GAP
+   -------------------------------------------------------------------------- */
+.sc-u-gap-1  { gap: var(--sc-space-1); }
+.sc-u-gap-2  { gap: var(--sc-space-2); }
+.sc-u-gap-3  { gap: var(--sc-space-3); }
+.sc-u-gap-4  { gap: var(--sc-space-4); }
+.sc-u-gap-6  { gap: var(--sc-space-6); }
+.sc-u-gap-8  { gap: var(--sc-space-8); }
+
+/* --------------------------------------------------------------------------
+   WIDTH
+   -------------------------------------------------------------------------- */
+.sc-u-w-full,
+.w-100       { width: 100%; }
+.sc-u-w-auto { width: auto; }
+.sc-u-max-w-sm  { max-width: var(--sc-container-sm); }
+.sc-u-max-w-md  { max-width: var(--sc-container-md); }
+.sc-u-max-w-lg  { max-width: var(--sc-container-lg); }
+
+/* --------------------------------------------------------------------------
+   BORDER RADIUS
+   -------------------------------------------------------------------------- */
+.sc-u-rounded-none { border-radius: 0; }
+.sc-u-rounded-sm   { border-radius: var(--sc-radius-sm); }
+.sc-u-rounded-md   { border-radius: var(--sc-radius-md); }
+.sc-u-rounded-lg   { border-radius: var(--sc-radius-lg); }
+.sc-u-rounded-xl   { border-radius: var(--sc-radius-xl); }
+.sc-u-rounded-full { border-radius: var(--sc-radius-full); }
+
+/* --------------------------------------------------------------------------
+   OVERFLOW
+   -------------------------------------------------------------------------- */
+.sc-u-overflow-hidden { overflow: hidden; }
+.sc-u-overflow-auto   { overflow: auto; }
+.sc-u-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   POSITION
+   -------------------------------------------------------------------------- */
+.sc-u-relative { position: relative; }
+.sc-u-absolute { position: absolute; }
+.sc-u-sticky   { position: sticky; }
+
+/* --------------------------------------------------------------------------
+   INTERACTIVE
+   -------------------------------------------------------------------------- */
+.sc-u-cursor-pointer { cursor: pointer; }
+.sc-u-pointer-none   { pointer-events: none; }
+.sc-u-select-none    { user-select: none; }
+
+/* --------------------------------------------------------------------------
+   OPACITY
+   -------------------------------------------------------------------------- */
+.sc-u-opacity-0   { opacity: 0; }
+.sc-u-opacity-50  { opacity: 0.5; }
+.sc-u-opacity-75  { opacity: 0.75; }
+.sc-u-opacity-100 { opacity: 1; }
+
+/* --------------------------------------------------------------------------
+   STATUS CLASSES (Legacy JS compatibility)
+   -------------------------------------------------------------------------- */
+.success { color: var(--sc-success); font-weight: var(--sc-weight-semibold); }
+.error   { color: var(--sc-danger);  font-weight: var(--sc-weight-semibold); }
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE VISIBILITY
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .sc-u-hide-mobile { display: none !important; }
+}
+
+@media (min-width: 769px) {
+  .sc-u-hide-desktop { display: none !important; }
+}
+
+@media (max-width: 1024px) {
+  .sc-u-hide-tablet { display: none !important; }
+}

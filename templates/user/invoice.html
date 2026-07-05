@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Invoice</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+
+        body {
+            font-family: "DejaVu Sans", sans-serif;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .invoice-box {
+            width: 100%;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #00d2ff;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #3a7bd5;
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-section p {
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #333;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .total-row {
+            margin-top: 30px;
+            text-align: right;
+            border-top: 2px solid #3a7bd5;
+            padding-top: 20px;
+        }
+
+        .total-row h3 {
+            margin: 0;
+            color: #3a7bd5;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="invoice-box">
+        <div class="header">
+            <h1>SmartCart Invoice</h1>
+            <p style="color: #666;">Thank you for shopping with us!</p>
+        </div>
+
+        <div class="info-section">
+            <table style="border: none; margin-top: 0;">
+                <tr style="border: none;">
+                    <td style="border: none; padding: 0;">
+                        <strong>Order Details:</strong><br>
+                        Order ID: #{{ order.order_id }}<br>
+                        Payment ID: {{ order.razorpay_payment_id }}<br>
+                        Date: {{ order.created_at.strftime('%B %d, %Y') if order.created_at else order.created_at }}<br>
+                        Status: {{ order.payment_status|title }}
+                    </td>
+                    <td style="border: none; padding: 0; text-align: right;">
+                        <strong>Customer Details:</strong><br>
+                        User ID: {{ order.user_id }}<br>
+                        <!-- In a real scenario, address info could go here -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Purchased Items</h3>
+        <table>
+            <tr>
+                <th>Product</th>
+                <th style="text-align: center;">Qty</th>
+                <th class="text-right">Price (Rs.)</th>
+                <th class="text-right">Total (Rs.)</th>
+            </tr>
+
+            {% for it in items %}
+            <tr>
+                <td>{{ it.product_name }}</td>
+                <td style="text-align: center;">{{ it.quantity }}</td>
+                <td class="text-right">Rs. {{ it.price }}</td>
+                <td class="text-right">Rs. {{ it.quantity * it.price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="total-row">
+            <h3>Grand Total: Rs.{{ order.amount }}</h3>
+        </div>
+
+        <div style="margin-top: 50px; text-align: center; color: #888; font-size: 12px;">
+            <p>This is a computer generated invoice and does not require a signature.</p>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+{% extends "admin/base.html" %}
+{% block title %}SmartCart - Dashboard{% endblock %}
+{% block content %}
+<div class="sc-dashboard sc-animate-fade-in-up">
+  <!-- Page Header -->
+  <div class="sc-dashboard__header">
+    <div>
+      <h2 style="margin-bottom: var(--sc-space-1);">Admin Dashboard</h2>
+      <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
+        Welcome back, <span class="text-accent" style="font-weight: 600;">{{ session['admin_name'] }}</span>!
+      </p>
+    </div>
+
+    <a href="{{ url_for('add_product') }}" class="sc-btn sc-btn--primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Add New Product
+    </a>
+  </div>
+
+  {% if products %}
+  <!-- Stats Bar -->
+  <div class="sc-stats" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+    <div class="sc-stat">
+      <div class="sc-stat__label">Total Products</div>
+      <div class="sc-stat__value">{{ products|length }}</div>
+    </div>
+    <div class="sc-stat">
+      <div class="sc-stat__label">Categories</div>
+      <div class="sc-stat__value">{{ products|map(attribute='category')|unique|list|length }}</div>
+    </div>
+    <div class="sc-stat">
+      <div class="sc-stat__label">Best Price From</div>
+      <div class="sc-stat__value" style="color: var(--sc-success);">₹{{ products|map(attribute='price')|min }}</div>
+    </div>
+  </div>
+  {% else %}
+  <div class="glass-card">
+    <div class="sc-empty">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="sc-empty__icon">
+        <path
+          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+        </path>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+      </svg>
+      <h3 class="sc-empty__title">No products yet</h3>
+      <p class="sc-empty__text">Get started by adding your first product to the catalog.</p>
+      <a href="{{ url_for('add_product') }}" class="sc-btn sc-btn--primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add First Product
+      </a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

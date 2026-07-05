@@ -1,0 +1,92 @@
+{% extends "user/base.html" %}
+{% block title %}SmartCart - Products{% endblock %}
+{% block content %}
+<div class="sc-dashboard sc-animate-fade-in-up">
+  <!-- Page Header -->
+  <div class="sc-dashboard__header">
+    <div>
+      <h2 style="margin-bottom: var(--sc-space-1);">Our Products</h2>
+      <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
+        Discover our collection of premium items.
+      </p>
+    </div>
+  </div>
+
+  <!-- Search & Filter Bar -->
+  <div class="sc-card sc-card--glass" style="padding: var(--sc-space-4) var(--sc-space-5); margin-bottom: var(--sc-space-6);">
+    <div style="display: flex; gap: var(--sc-space-4); flex-wrap: wrap; align-items: center;">
+      <form method="GET" action="/user/products" style="display: flex; gap: var(--sc-space-3); flex: 1; min-width: 200px;">
+        <input type="text" name="search" placeholder="Search products..."
+               value="{{ request.args.get('search', '') }}"
+               style="flex: 1;">
+        <button type="submit" class="sc-btn sc-btn--primary sc-btn--sm">Search</button>
+      </form>
+      <form method="GET" action="/user/products" style="display: flex; gap: var(--sc-space-3); min-width: 180px;">
+        <select name="category" style="flex: 1;">
+          <option value="">All Categories</option>
+          {% for cat in categories %}
+          <option value="{{ cat.category }}"
+              {% if request.args.get('category') == cat.category %} selected {% endif %}>
+              {{ cat.category }}
+          </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="sc-btn sc-btn--ghost sc-btn--sm">Filter</button>
+      </form>
+    </div>
+  </div>
+
+  {% if products %}
+  <!-- Product Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--sc-space-6);">
+    {% for product in products %}
+    <div class="sc-card sc-card--glass sc-card--hover" style="padding: 0; display: flex; flex-direction: column; overflow: hidden;">
+      <!-- Product Image -->
+      <div style="position: relative; padding-top: 75%; background: var(--sc-bg-surface-alt); overflow: hidden;">
+        <img src="{{ url_for('static', filename='uploads/product_images/' + product.image_name) }}"
+             alt="{{ product.name }}"
+             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
+             onmouseenter="this.style.transform='scale(1.05)'"
+             onmouseleave="this.style.transform='scale(1)'" />
+        <span class="sc-badge sc-badge--brand" style="position: absolute; top: var(--sc-space-3); right: var(--sc-space-3);">
+          {{ product.category }}
+        </span>
+      </div>
+      
+      <!-- Product Details -->
+      <div style="padding: var(--sc-space-5); display: flex; flex-direction: column; flex: 1;">
+        <h3 style="font-size: var(--sc-text-lg); margin-bottom: var(--sc-space-2); font-weight: var(--sc-weight-semibold); color: var(--sc-text-primary);">
+          {{ product.name }}
+        </h3>
+        
+        <p style="font-size: var(--sc-text-2xl); font-weight: var(--sc-weight-bold); color: var(--sc-brand-400); margin-bottom: var(--sc-space-4);">
+          ₹{{ product.price }}
+        </p>
+        
+        <div style="margin-top: auto;">
+          <a href="/user/product/{{ product.product_id }}" class="sc-btn sc-btn--primary" style="width: 100%;">
+            View Details
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <!-- Empty State -->
+  <div class="glass-card">
+    <div class="sc-empty">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="sc-empty__icon">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+      </svg>
+      <h3 class="sc-empty__title">No products found</h3>
+      <p class="sc-empty__text">We couldn't find any products matching your search or filter.</p>
+      <a href="/user/products" class="sc-btn sc-btn--primary">Clear Filters</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

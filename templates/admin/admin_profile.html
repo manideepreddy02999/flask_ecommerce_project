@@ -1,0 +1,187 @@
+{% extends "admin/base.html" %}
+{% block title %}SmartCart - Admin Profile{% endblock %}
+{% block content %}
+<div class="auth-container" style="max-width: 560px;">
+  <div class="glass-card sc-animate-fade-in-up">
+    <!-- Header with Avatar -->
+    <div class="sc-u-text-center sc-u-mb-8">
+      <!-- Profile Image -->
+      <div style="position: relative; display: inline-block; margin-bottom: var(--sc-space-5);">
+        {% if admin.profile_image %}
+        <div id="profile-avatar" style="
+          width: 120px; height: 120px; border-radius: 50%;
+          overflow: hidden; border: 3px solid var(--sc-brand-500);
+          box-shadow: 0 0 30px rgba(0, 188, 212, 0.2);
+          margin: 0 auto;
+        ">
+          <img src="{{ url_for('static', filename='uploads/admin_profiles/' + admin.profile_image) }}"
+               alt="{{ admin.name }}"
+               id="current-avatar-img"
+               style="width: 100%; height: 100%; object-fit: cover;" />
+        </div>
+        {% else %}
+        <div id="profile-avatar" style="
+          width: 120px; height: 120px; border-radius: 50%;
+          background: var(--sc-gradient-brand);
+          display: flex; align-items: center; justify-content: center;
+          margin: 0 auto;
+          box-shadow: 0 0 30px rgba(0, 188, 212, 0.2);
+        ">
+          <span style="font-size: var(--sc-text-4xl); font-weight: var(--sc-weight-bold); color: var(--sc-neutral-0);">
+            {{ admin.name[0]|upper }}
+          </span>
+        </div>
+        {% endif %}
+        <!-- Camera Badge -->
+        <label for="profile-image-input" style="
+          position: absolute; bottom: 4px; right: 4px;
+          width: 36px; height: 36px; border-radius: 50%;
+          background: var(--sc-brand-500); cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          border: 3px solid var(--sc-bg-surface);
+          transition: all 0.2s ease;
+        " onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform=''">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sc-neutral-0)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+        </label>
+      </div>
+
+      <h2 class="auth-title" style="margin-bottom: var(--sc-space-1);">{{ admin.name }}</h2>
+      <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">{{ admin.email }}</p>
+    </div>
+
+    <!-- Divider -->
+    <div style="height: 1px; background: var(--sc-border); margin-bottom: var(--sc-space-8);"></div>
+
+    <!-- Profile Form -->
+    <form method="POST" action="{{ url_for('admin_profile') }}" enctype="multipart/form-data" id="profile-form">
+      <div class="form-group">
+        <label for="profile-name">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: var(--sc-space-1);">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Full Name
+        </label>
+        <input type="text" name="name" id="profile-name" value="{{ admin.name }}" required placeholder="Your full name" />
+      </div>
+
+      <div class="form-group">
+        <label for="profile-email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: var(--sc-space-1);">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          Email Address
+        </label>
+        <input type="email" name="email" id="profile-email" value="{{ admin.email }}" required placeholder="you@example.com" />
+      </div>
+
+      <div class="form-group">
+        <label for="profile-password">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: var(--sc-space-1);">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          New Password
+          <span style="color: var(--sc-text-muted); font-weight: var(--sc-weight-normal);"> (optional)</span>
+        </label>
+        <input type="password" name="password" id="profile-password" placeholder="Leave blank to keep current" />
+      </div>
+
+      <!-- Hidden file input (triggered by camera badge) -->
+      <input type="file" name="profile_image" id="profile-image-input" accept="image/*" style="display: none;" />
+
+      <!-- New Image Preview -->
+      <div id="new-image-preview-container" style="display: none; margin-bottom: var(--sc-space-5);">
+        <div style="
+          padding: var(--sc-space-4);
+          background: var(--sc-bg-surface);
+          border: 1px solid var(--sc-brand-500);
+          border-radius: var(--sc-radius-lg);
+          display: flex; align-items: center; gap: var(--sc-space-4);
+        ">
+          <div style="
+            width: 56px; height: 56px; border-radius: 50%;
+            overflow: hidden; flex-shrink: 0; border: 2px solid var(--sc-brand-500);
+          ">
+            <img id="new-image-preview" src="" alt="New Profile" style="width: 100%; height: 100%; object-fit: cover;" />
+          </div>
+          <div>
+            <p style="font-size: var(--sc-text-sm); font-weight: var(--sc-weight-semibold); color: var(--sc-brand-400); margin: 0;">
+              New Profile Image
+            </p>
+            <p style="font-size: var(--sc-text-xs); color: var(--sc-text-muted); margin: 0; margin-top: 2px;" id="profile-file-name">
+              Ready to upload
+            </p>
+          </div>
+          <button type="button" id="remove-new-image" style="
+            margin-left: auto; background: rgba(239,68,68,0.1); border: none;
+            color: var(--sc-danger); padding: var(--sc-space-1-5);
+            border-radius: var(--sc-radius-md); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s ease;
+          " onmouseenter="this.style.background='rgba(239,68,68,0.2)'" onmouseleave="this.style.background='rgba(239,68,68,0.1)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: var(--sc-space-3); margin-top: var(--sc-space-4);">
+        <button type="submit" class="sc-btn sc-btn--primary sc-btn--lg" style="flex: 1;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          Save Changes
+        </button>
+        <a href="{{ url_for('dashboard') }}" class="sc-btn sc-btn--ghost sc-btn--lg"
+           style="transition: all 0.2s ease;"
+           onmouseenter="this.style.borderColor='var(--sc-brand-500)'; this.style.color='var(--sc-brand-400)'; this.style.background='rgba(0,188,212,0.06)';"
+           onmouseleave="this.style.borderColor='var(--sc-border)'; this.style.color='var(--sc-text-secondary)'; this.style.background='transparent';">
+          Dashboard
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+  const fileInput = document.getElementById('profile-image-input');
+  const previewContainer = document.getElementById('new-image-preview-container');
+  const previewImg = document.getElementById('new-image-preview');
+  const fileName = document.getElementById('profile-file-name');
+  const removeBtn = document.getElementById('remove-new-image');
+
+  fileInput.addEventListener('change', function() {
+    if (this.files[0]) {
+      const file = this.files[0];
+      fileName.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+        previewContainer.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  removeBtn.addEventListener('click', function() {
+    fileInput.value = '';
+    previewContainer.style.display = 'none';
+    previewImg.src = '';
+  });
+})();
+</script>
+{% endblock %}
