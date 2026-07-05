@@ -33,14 +33,12 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.08) 45%,
-    rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.08) 55%,
-    transparent 60%
-  );
+  background: linear-gradient(105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.08) 45%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.08) 55%,
+      transparent 60%);
   transform: translateX(-100%);
   transition: transform 0.6s var(--sc-ease-out);
 }
@@ -140,10 +138,25 @@ button[type="button"]:hover {
 }
 
 /* --- Sizes --- */
-.sc-btn--xs { padding: var(--sc-space-1-5) var(--sc-space-3); font-size: var(--sc-text-xs); }
-.sc-btn--sm { padding: var(--sc-space-2) var(--sc-space-4);   font-size: var(--sc-text-sm); }
-.sc-btn--lg { padding: var(--sc-space-4) var(--sc-space-8);   font-size: var(--sc-text-base); }
-.sc-btn--xl { padding: var(--sc-space-5) var(--sc-space-10);  font-size: var(--sc-text-md); }
+.sc-btn--xs {
+  padding: var(--sc-space-1-5) var(--sc-space-3);
+  font-size: var(--sc-text-xs);
+}
+
+.sc-btn--sm {
+  padding: var(--sc-space-2) var(--sc-space-4);
+  font-size: var(--sc-text-sm);
+}
+
+.sc-btn--lg {
+  padding: var(--sc-space-4) var(--sc-space-8);
+  font-size: var(--sc-text-base);
+}
+
+.sc-btn--xl {
+  padding: var(--sc-space-5) var(--sc-space-10);
+  font-size: var(--sc-text-md);
+}
 
 /* --- Block (Full width) --- */
 .sc-btn--block,
@@ -343,6 +356,7 @@ select {
 .sc-card--accent-purple {
   border-top: 2px solid var(--sc-accent-500);
 }
+
 .sc-card--accent-purple::before {
   content: '';
   position: absolute;
@@ -358,6 +372,7 @@ select {
 .sc-card--accent-green {
   border-top: 2px solid var(--sc-success);
 }
+
 .sc-card--accent-green::before {
   content: '';
   position: absolute;
@@ -872,7 +887,7 @@ select {
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--sc-duration-normal) var(--sc-ease-default),
-              visibility var(--sc-duration-normal) var(--sc-ease-default);
+    visibility var(--sc-duration-normal) var(--sc-ease-default);
 }
 
 .sc-cart-overlay.is-open {
@@ -947,7 +962,7 @@ select {
   background: var(--sc-bg-surface-alt);
 }
 
-.sc-cart__item + .sc-cart__item {
+.sc-cart__item+.sc-cart__item {
   border-top: 1px solid var(--sc-border);
 }
 
@@ -1047,7 +1062,7 @@ select {
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--sc-duration-normal) var(--sc-ease-default),
-              visibility var(--sc-duration-normal) var(--sc-ease-default);
+    visibility var(--sc-duration-normal) var(--sc-ease-default);
 }
 
 .sc-modal-overlay.is-open {
@@ -1253,9 +1268,23 @@ select {
   object-fit: cover;
 }
 
-.sc-avatar--sm { width: 32px; height: 32px; font-size: var(--sc-text-xs); }
-.sc-avatar--lg { width: 56px; height: 56px; font-size: var(--sc-text-lg); }
-.sc-avatar--xl { width: 80px; height: 80px; font-size: var(--sc-text-2xl); }
+.sc-avatar--sm {
+  width: 32px;
+  height: 32px;
+  font-size: var(--sc-text-xs);
+}
+
+.sc-avatar--lg {
+  width: 56px;
+  height: 56px;
+  font-size: var(--sc-text-lg);
+}
+
+.sc-avatar--xl {
+  width: 80px;
+  height: 80px;
+  font-size: var(--sc-text-2xl);
+}
 
 
 /* ==========================================================================
@@ -1289,9 +1318,17 @@ select {
   animation: sc-slide-in-right var(--sc-duration-normal) var(--sc-ease-bounce);
 }
 
-.sc-toast--success { border-left: 3px solid var(--sc-success); }
-.sc-toast--danger  { border-left: 3px solid var(--sc-danger); }
-.sc-toast--info    { border-left: 3px solid var(--sc-info); }
+.sc-toast--success {
+  border-left: 3px solid var(--sc-success);
+}
+
+.sc-toast--danger {
+  border-left: 3px solid var(--sc-danger);
+}
+
+.sc-toast--info {
+  border-left: 3px solid var(--sc-info);
+}
 
 
 /* ==========================================================================
@@ -1429,12 +1466,10 @@ select {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.04) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      transparent 100%);
   animation: sc-shimmer 1.5s infinite;
 }
 
