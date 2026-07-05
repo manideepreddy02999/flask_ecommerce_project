@@ -1,0 +1,7 @@
+Flask
+mysql-connector-python
+Flask-Mail
+bcrypt
+razorpay
+Werkzeug
+xhtml2pdf 
