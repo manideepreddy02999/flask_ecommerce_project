@@ -1,0 +1,34 @@
+{% extends "user/base.html" %}
+{% block title %}SmartCart - Verify OTP{% endblock %}
+{% block content %}
+<div class="sc-auth auth-container sc-animate-fade-in-up">
+  <div class="sc-auth__card glass-card">
+    <h2 class="sc-auth__title auth-title">Verify Your OTP</h2>
+    <form method="POST" action="/user-complete-signup">
+      <div class="form-group">
+        <label>One-Time Password</label>
+        <input type="text" id="otp" name="otp" required placeholder="123456" />
+      </div>
+
+      <button type="button" class="sc-btn sc-btn--primary sc-btn--block mt-4" onclick="verifyUserOTP()">
+        Verify OTP
+      </button>
+
+      <div id="otp-status" class="mt-4 text-center"></div>
+
+      <div id="password-section" style="display: none" class="mt-4">
+        <div class="form-group">
+          <label>Create Password</label>
+          <input type="password" name="password" required placeholder="Must be at least 8 characters" />
+        </div>
+        <button type="submit" class="sc-btn sc-btn--primary sc-btn--block">
+          Complete Registration
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/user_verify_otp.js') }}"></script>
+{% endblock %}

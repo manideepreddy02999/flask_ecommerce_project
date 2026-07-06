@@ -91,22 +91,21 @@
         </div>
 
         <div class="info-section">
-            <table style="border: none; margin-top: 0;">
-                <tr style="border: none;">
-                    <td style="border: none; padding: 0;">
-                        <strong>Order Details:</strong><br>
-                        Order ID: #{{ order.order_id }}<br>
-                        Payment ID: {{ order.razorpay_payment_id }}<br>
-                        Date: {{ order.created_at.strftime('%B %d, %Y') if order.created_at else order.created_at }}<br>
-                        Status: {{ order.payment_status|title }}
-                    </td>
-                    <td style="border: none; padding: 0; text-align: right;">
-                        <strong>Customer Details:</strong><br>
-                        User ID: {{ order.user_id }}<br>
-                        <!-- In a real scenario, address info could go here -->
-                    </td>
-                </tr>
-            </table>
+            <div>
+                <strong>Order Details:</strong><br>
+                Order ID: #{{ order.order_id }}<br>
+                Payment ID: {{ order.razorpay_payment_id }}<br>
+                Date: {{ order.created_at.strftime('%B %d, %Y') if order.created_at else order.created_at }}<br>
+                Status: {{ order.payment_status|title }}<br><br>
+                <strong>Address:</strong><br>
+                <span style="color: #555;">
+                    {% if user_address %}
+                        {{ user_address | replace('#$#$', ',<br>') | safe }}.
+                    {% else %}
+                        Not provided
+                    {% endif %}
+                </span>
+            </div>
         </div>
 
         <h3>Purchased Items</h3>

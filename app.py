@@ -43,6 +43,17 @@ def get_db():
     connection.row_factory = sqlite3.Row
     return connection
 
+def migrate_db():
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.execute("ALTER TABLE orders ADD COLUMN address TEXT")
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass
+
+migrate_db()
+
 @app.route('/')
 def index():
 
@@ -299,7 +310,7 @@ def product_list():
 
     if 'admin_id' not in session:
         flash("Please login first!", "danger")
-        return redirect('/admin-login')
+        return redirect('/admin-signin')
 
     search = request.args.get('search', '')
     category_filter = request.args.get('category', '')
@@ -342,7 +353,7 @@ def update_product(product_id):
 
     if 'admin_id' not in session:
         flash("Please login!", "danger")
-        return redirect('/admin-login')
+        return redirect('/admin-signin')
 
     conn = get_db()
     cursor = conn.cursor()
@@ -421,7 +432,7 @@ def view_product(product_id):
 
     if 'admin_id' not in session:
         flash("Please login first!", "danger")
-        return redirect('/admin-login')
+        return redirect('/admin-signin')
 
     conn = get_db()
     cursor = conn.cursor()
@@ -443,7 +454,7 @@ def delete_product(product_id):
 
     if 'admin_id' not in session:
         flash("Please login first!", "danger")
-        return redirect('/admin-login')
+        return redirect('/admin-signin')
 
     conn = get_db()
     cursor = conn.cursor()
@@ -485,7 +496,15 @@ def admin_logout():
 
 @app.route('/user')
 def user_index():
-    return render_template('user/index.html')
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT DISTINCT category FROM products LIMIT 6")
+    categories = cursor.fetchall()
+    cursor.execute("SELECT * FROM products ORDER BY product_id DESC LIMIT 8")
+    trending_products = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('user/index.html', categories=categories, trending_products=trending_products)
 
 @app.route('/user-signup', methods=['GET', 'POST'])
 def user_signup():
@@ -494,7 +513,6 @@ def user_signup():
 
     name = request.form['name']
     email = request.form['email']
-    password = request.form['password']
 
     conn = get_db()
     cursor = conn.cursor()
@@ -507,6 +525,51 @@ def user_signup():
         flash("This email is already registered. Please login instead.", "danger")
         return redirect('/user-signup')
 
+    session['user_signup_name'] = name
+    session['user_signup_email'] = email
+
+    otp = random.randint(100000, 999999)
+    session['user_otp'] = otp
+
+    message = Message(
+        subject="SmartCart User OTP",
+        sender=app.config['MAIL_USER'],
+        recipients=[email]
+    )
+    message.body = f"Your OTP for SmartCart User Registration is: {otp}"
+    mail.send(message)
+
+    flash("OTP sent to your email!", "success")
+    return redirect('/user-verify-otp')
+
+
+@app.route('/user-verify-otp', methods=['POST','GET'])
+def user_verify_otp():
+    if request.method == "GET":
+        return render_template("user/verify_otp.html")
+
+    user_otp = request.form['otp']
+
+    if str(session.get('user_otp')) != str(user_otp):
+        return jsonify({
+            "success": False
+        })
+
+    session["user_otp_verified"] = True
+    session.pop("user_otp", None)
+
+    return jsonify({
+        "success": True
+    })
+
+
+@app.route('/user-complete-signup', methods=['POST'])
+def user_complete_signup():
+    if not session.get("user_otp_verified"):
+        flash("Verify OTP first.")
+        return redirect("/user-verify-otp")
+
+    password = request.form["password"]
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     conn = get_db()
@@ -517,16 +580,18 @@ def user_signup():
         VALUES(?,?,?)
         """,
         (
-            name,
-            email,
+            session['user_signup_name'],
+            session['user_signup_email'],
             hashed_password
         )
     )
-
     conn.commit()
-
     cursor.close()
     conn.close()
+
+    session.pop("user_otp_verified", None)
+    session.pop("user_signup_name", None)
+    session.pop("user_signup_email", None)
 
     flash("Registration Successful! Please Sign In.", "success")
     return redirect("/user-signin")
@@ -621,7 +686,7 @@ def user_products_list():
 
 @app.route('/user/product/<int:product_id>')
 def user_product_details(product_id):
-    if not session['user_id'] :
+    if not session.get('user_id'):
         flash("Please login first!", "danger")
         return redirect('/user-signin')
     conn = get_db()
@@ -685,13 +750,39 @@ def add_to_cart(product_id):
     # return redirect('/user/cart')    
     return redirect(request.referrer) 
 
+@app.route('/user/buy-now/<int:product_id>')
+def buy_now(product_id):
+    if 'user_id' not in session:
+        flash("Please login first!", "danger")
+        return redirect('/user-signin')
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM products WHERE product_id=?", (product_id,))
+    product = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if not product:
+        flash("Product not found.", "danger")
+        return redirect(request.referrer)
+
+    session['checkout_items'] = [{
+        'pid': str(product_id),
+        'name': product['name'],
+        'price': float(product['price']),
+        'image': product['image_name'],
+        'quantity': 1
+    }]
+    return redirect('/user/checkout')
+
 
 @app.route('/user/cart')
 def view_cart():
 
     if 'user_id' not in session:
         flash("Please login first!", "danger")
-        return redirect('/user-login')
+        return redirect('/user-signin')
 
     cart_items = session.get(_cart_key(), {})
 
@@ -1001,13 +1092,14 @@ def verify_payment():
     cursor = conn.cursor()
 
     try:
-
-
+        cursor.execute("SELECT address FROM users WHERE user_id = ?", (user_id,))
+        user_row = cursor.fetchone()
+        address_str = user_row['address'] if user_row and user_row['address'] else "Address not provided"
 
         cursor.execute("""
-            INSERT INTO orders (user_id, razorpay_order_id, razorpay_payment_id, amount, payment_status)
-            VALUES (?, ?, ?, ?, ?)
-        """, (user_id, razorpay_order_id, razorpay_payment_id, total_amount, 'paid'))
+            INSERT INTO orders (user_id, razorpay_order_id, razorpay_payment_id, amount, payment_status, address)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (user_id, razorpay_order_id, razorpay_payment_id, total_amount, 'paid', address_str))
 
         order_db_id = cursor.lastrowid 
 
@@ -1083,10 +1175,14 @@ def my_orders():
     except:
         orders = []
 
+    cursor.execute("SELECT address FROM users WHERE user_id=?", (session['user_id'],))
+    user_row = cursor.fetchone()
+    user_address = user_row['address'] if user_row and user_row['address'] else "Address not provided"
+
     cursor.close()
     conn.close()
 
-    return render_template("user/my_orders.html", orders=orders)
+    return render_template("user/my_orders.html", orders=orders, user_address=user_address)
 
 
 from flask import make_response
@@ -1107,6 +1203,11 @@ def download_invoice(order_id):
  
     cursor.execute("SELECT * FROM order_items WHERE order_id=?", (order_id,))
     items = cursor.fetchall()
+
+    cursor.execute("SELECT name, address FROM users WHERE user_id=?", (session['user_id'],))
+    user_row = cursor.fetchone()
+    user_address = user_row['address'] if user_row and user_row['address'] else "Address not provided"
+    user_name = user_row['name'] if user_row else "Unknown Customer"
  
     cursor.close()
     conn.close()
@@ -1115,7 +1216,7 @@ def download_invoice(order_id):
         flash("Order not found.", "danger")
         return redirect('/user/my-orders')
  
-    html = render_template("user/invoice.html", order=order, items=items)
+    html = render_template("user/invoice.html", order=order, items=items, user_address=user_address, user_name=user_name)
  
     pdf = generate_pdf(html)
     if not pdf:
@@ -1127,6 +1228,148 @@ def download_invoice(order_id):
     response.headers['Content-Disposition'] = f"attachment; filename=invoice_{order_id}.pdf"
  
     return response
+
+# Forgot Password Routes - Admin
+@app.route('/admin-forgot-password', methods=['GET', 'POST'])
+def admin_forgot_password():
+    if request.method == 'GET':
+        return render_template('admin/forgot_password.html')
+    
+    email = request.form['email']
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT admin_id FROM admin WHERE email=?", (email,))
+    admin = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if not admin:
+        flash("Email not found in our records.", "danger")
+        return redirect('/admin-forgot-password')
+
+    otp = random.randint(100000, 999999)
+    session['admin_reset_email'] = email
+    session['admin_reset_otp'] = otp
+
+    message = Message(
+        subject="SmartCart Admin Password Reset OTP",
+        sender=app.config['MAIL_USER'],
+        recipients=[email]
+    )
+    message.body = f"Your OTP for resetting your admin password is: {otp}"
+    mail.send(message)
+
+    flash("OTP sent to your email!", "success")
+    return redirect('/admin-verify-reset-otp')
+
+@app.route('/admin-verify-reset-otp', methods=['GET', 'POST'])
+def admin_verify_reset_otp():
+    if request.method == 'GET':
+        if 'admin_reset_email' not in session:
+            return redirect('/admin-forgot-password')
+        return render_template('admin/verify_reset_otp.html')
+
+    user_otp = request.form['otp']
+    if str(session.get('admin_reset_otp')) != str(user_otp):
+        return jsonify({"success": False})
+
+    session["admin_reset_otp_verified"] = True
+    session.pop("admin_reset_otp", None)
+    return jsonify({"success": True})
+
+@app.route('/admin-reset-password', methods=['POST'])
+def admin_reset_password():
+    if not session.get("admin_reset_otp_verified"):
+        flash("Verify OTP first.", "danger")
+        return redirect("/admin-verify-reset-otp")
+
+    password = request.form["password"]
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    email = session.get('admin_reset_email')
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE admin SET password=? WHERE email=?", (hashed_password, email))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    session.pop("admin_reset_otp_verified", None)
+    session.pop("admin_reset_email", None)
+
+    flash("Password reset successfully! Please sign in with your new password.", "success")
+    return redirect("/admin-signin")
+
+# Forgot Password Routes - User
+@app.route('/user-forgot-password', methods=['GET', 'POST'])
+def user_forgot_password():
+    if request.method == 'GET':
+        return render_template('user/forgot_password.html')
+    
+    email = request.form['email']
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT user_id FROM users WHERE email=?", (email,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if not user:
+        flash("Email not found in our records.", "danger")
+        return redirect('/user-forgot-password')
+
+    otp = random.randint(100000, 999999)
+    session['user_reset_email'] = email
+    session['user_reset_otp'] = otp
+
+    message = Message(
+        subject="SmartCart Password Reset OTP",
+        sender=app.config['MAIL_USER'],
+        recipients=[email]
+    )
+    message.body = f"Your OTP for resetting your password is: {otp}"
+    mail.send(message)
+
+    flash("OTP sent to your email!", "success")
+    return redirect('/user-verify-reset-otp')
+
+@app.route('/user-verify-reset-otp', methods=['GET', 'POST'])
+def user_verify_reset_otp():
+    if request.method == 'GET':
+        if 'user_reset_email' not in session:
+            return redirect('/user-forgot-password')
+        return render_template('user/verify_reset_otp.html')
+
+    user_otp = request.form['otp']
+    if str(session.get('user_reset_otp')) != str(user_otp):
+        return jsonify({"success": False})
+
+    session["user_reset_otp_verified"] = True
+    session.pop("user_reset_otp", None)
+    return jsonify({"success": True})
+
+@app.route('/user-reset-password', methods=['POST'])
+def user_reset_password():
+    if not session.get("user_reset_otp_verified"):
+        flash("Verify OTP first.", "danger")
+        return redirect("/user-verify-reset-otp")
+
+    password = request.form["password"]
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    email = session.get('user_reset_email')
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET password=? WHERE email=?", (hashed_password, email))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    session.pop("user_reset_otp_verified", None)
+    session.pop("user_reset_email", None)
+
+    flash("Password reset successfully! Please sign in with your new password.", "success")
+    return redirect("/user-signin")
 
 if __name__ == '__main__':
     app.run(debug=True)

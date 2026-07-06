@@ -15,17 +15,17 @@
         <label for="signup-email">Email Address</label>
         <input type="email" id="signup-email" name="email" required placeholder="you@example.com" />
       </div>
-      <div class="form-group">
-        <label for="signup-password">Password</label>
-        <input type="password" id="signup-password" name="password" required placeholder="Create a strong password" />
-      </div>
-      <button type="submit" class="sc-btn sc-btn--primary sc-btn--block mt-4">Create Account</button>
+      <button type="submit" class="sc-btn sc-btn--primary sc-btn--block mt-4">Send OTP</button>
     </form>
 
-    <div class="sc-divider">or</div>
 
     <div class="sc-auth__footer">
       Already have an account? <a href="{{ url_for('user_signin') }}">Sign in</a>
+    </div>
+
+    <div class="sc-divider">or</div>
+    <div style="text-align: center; margin-bottom: var(--sc-space-4);">
+      <a href="{{ url_for('admin_signin') }}" class="sc-btn sc-btn--ghost" style="width: 100%;">Admin Login</a>
     </div>
   </div>
 </div>

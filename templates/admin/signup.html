@@ -1,6 +1,32 @@
-{% extends "admin/base.html" %} {% block title %}SmartCart - Admin Signup{%
-endblock %} {% block content %}
-<div class="auth-container">
+{% extends "admin/base.html" %} 
+{% block title %}SmartCart - Admin Signup{% endblock %} 
+{% block content %}
+<style>
+  .admin-theme {
+    --sc-brand-400: #a78bfa;
+    --sc-brand-500: #8b5cf6;
+    --sc-brand-600: #7c3aed;
+    --sc-brand-rgb: 139, 92, 246;
+  }
+  .admin-theme .sc-btn--primary {
+    background-color: var(--sc-brand-500);
+    border-color: var(--sc-brand-500);
+    box-shadow: 0 4px 12px rgba(var(--sc-brand-rgb), 0.3);
+  }
+  .admin-theme .sc-btn--primary:hover {
+    background-color: var(--sc-brand-600);
+    border-color: var(--sc-brand-600);
+    box-shadow: 0 6px 16px rgba(var(--sc-brand-rgb), 0.4);
+  }
+  .admin-theme .sc-auth__footer a,
+  .admin-theme .sc-btn--ghost {
+    color: var(--sc-brand-400);
+  }
+  .admin-theme .auth-title {
+    color: #c4b5fd;
+  }
+</style>
+<div class="auth-container admin-theme">
   <div class="glass-card">
     <h2 class="auth-title">Admin Registration</h2>
     <form method="POST" action="/admin-signup">
@@ -12,8 +38,21 @@ endblock %} {% block content %}
         <label>Email Address</label>
         <input type="email" name="email" required placeholder="john@example.com" />
       </div>
-      <button type="submit" class="btn-primary w-100 mt-4">Send OTP</button>
+      <button type="submit" class="sc-btn sc-btn--primary sc-btn--block mt-4">Send OTP</button>
+      <div class="sc-auth__footer">
+      Already have an account? <a href="{{ url_for('admin_signin') }}">Signin</a>
+    </div>
     </form>
+    
+    <div style="display: flex; align-items: center; text-align: center; margin: var(--sc-space-6) 0; color: var(--sc-text-muted);">
+      <div style="flex: 1; border-bottom: 1px solid var(--sc-border);"></div>
+      <span style="padding: 0 var(--sc-space-4); font-size: var(--sc-text-sm);">or</span>
+      <div style="flex: 1; border-bottom: 1px solid var(--sc-border);"></div>
+    </div>
+    
+    <div style="text-align: center;">
+      <a href="{{ url_for('user_signin') }}" class="sc-btn sc-btn--ghost" style="width: 100%;">User Login</a>
+    </div>
   </div>
 </div>
 {% endblock %}

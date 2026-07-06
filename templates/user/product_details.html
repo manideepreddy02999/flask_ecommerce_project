@@ -64,8 +64,7 @@
         </div>
 
         <div style="display: flex; gap: var(--sc-space-3); flex-wrap: wrap;">
-          <a href="/user/add-to-cart/{{ product.product_id }}" >
-          <button class="sc-btn sc-btn--primary" >
+          <a href="/user/add-to-cart/{{ product.product_id }}" class="sc-btn" style="background: rgba(0, 210, 255, 0.1); color: #00d2ff; border: 1px solid rgba(0, 210, 255, 0.3);">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="9" cy="21" r="1"></circle>
@@ -73,9 +72,15 @@
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
             Add to Cart
-          </button>
           </a>
-          <a href="/user/products" class="sc-btn sc-btn--ghost">
+          <a href="/user/buy-now/{{ product.product_id }}" class="sc-btn sc-btn--primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+            Buy Now
+          </a>
+          <a href="/user/products" class="sc-btn" style="background: rgba(255, 255, 255, 0.05); color: var(--sc-text-secondary); border: 1px solid rgba(255,255,255,0.1);">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>

@@ -64,6 +64,33 @@
         {% block content %}{% endblock %}
     </main>
 
+    <footer class="sc-footer" style="background: var(--sc-bg-surface); padding: var(--sc-space-8) 0; border-top: 1px solid var(--sc-border); margin-top: var(--sc-space-12);">
+        <div class="container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--sc-space-8);">
+            <div>
+                <h3 style="font-size: var(--sc-text-lg); font-weight: bold; margin-bottom: var(--sc-space-4);"><a href="{{ url_for('user_index') }}" style="text-decoration: none; color: inherit;">Smart<span class="sc-u-text-brand">Cart</span></a></h3>
+                <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">Your premium shopping experience. Find the best products at the best prices.</p>
+            </div>
+            <div>
+                <h4 style="font-weight: 600; margin-bottom: var(--sc-space-4); color: var(--sc-text-primary);">Quick Links</h4>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: var(--sc-space-2);">
+                    <li><a href="/user/products" style="color: var(--sc-text-secondary); text-decoration: none; font-size: var(--sc-text-sm); transition: color 0.2s;">Products</a></li>
+                    <li><a href="/user/cart" style="color: var(--sc-text-secondary); text-decoration: none; font-size: var(--sc-text-sm); transition: color 0.2s;">Cart</a></li>
+                    <li><a href="/user/my-orders" style="color: var(--sc-text-secondary); text-decoration: none; font-size: var(--sc-text-sm); transition: color 0.2s;">My Orders</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="font-weight: 600; margin-bottom: var(--sc-space-4); color: var(--sc-text-primary);">Support</h4>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: var(--sc-space-2);">
+                    <li><span style="color: var(--sc-text-secondary); font-size: var(--sc-text-sm);">Email: support@smartcart.com</span></li>
+                    <li><span style="color: var(--sc-text-secondary); font-size: var(--sc-text-sm);">Phone: +91 92425 92425</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container" style="text-align: center; margin-top: var(--sc-space-8); padding-top: var(--sc-space-4); border-top: 1px solid rgba(255, 255, 255, 0.1); color: var(--sc-text-muted); font-size: var(--sc-text-xs);">
+            &copy; 2026 SmartCart. All rights reserved.
+        </div>
+    </footer>
+
     <!-- Mobile Nav Toggle Script -->
     <script>
         (function () {

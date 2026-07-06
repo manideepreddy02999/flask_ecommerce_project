@@ -1,0 +1,72 @@
+{% extends "user/base.html" %}
+{% block title %}SmartCart - Verify Password Reset OTP{% endblock %}
+{% block content %}
+<div class="sc-auth auth-container sc-animate-fade-in-up">
+  <div class="sc-auth__card glass-card">
+    <h2 class="sc-auth__title auth-title">Verify Your OTP</h2>
+    <p class="sc-auth__subtitle" style="margin-bottom: var(--sc-space-4);">We've sent an OTP to your registered email.</p>
+    
+    <form method="POST" action="{{ url_for('user_reset_password') }}">
+      <div class="form-group">
+        <label>One-Time Password</label>
+        <input type="text" id="otp" name="otp" required placeholder="123456" />
+      </div>
+
+      <button type="button" class="sc-btn sc-btn--primary sc-btn--block mt-4" id="verify-otp-btn" onclick="verifyResetOTP()">
+        Verify OTP
+      </button>
+
+      <div id="otp-status" class="mt-4 text-center"></div>
+
+      <div id="password-section" style="display: none" class="mt-4">
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" name="password" required placeholder="Enter new password" />
+        </div>
+        <button type="submit" class="sc-btn sc-btn--primary sc-btn--block">
+          Reset Password
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function verifyResetOTP() {
+  const otpInput = document.getElementById('otp').value;
+  const statusDiv = document.getElementById('otp-status');
+
+  if (!otpInput) {
+    statusDiv.innerHTML = '<span style="color: var(--sc-danger);">Please enter the OTP</span>';
+    return;
+  }
+
+  statusDiv.innerHTML = '<span style="color: var(--sc-text-muted);">Verifying...</span>';
+
+  try {
+    const formData = new FormData();
+    formData.append('otp', otpInput);
+
+    const response = await fetch('/user-verify-reset-otp', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      statusDiv.innerHTML = '<span style="color: var(--sc-success);">OTP Verified! Please enter your new password.</span>';
+      document.getElementById('password-section').style.display = 'block';
+      document.getElementById('verify-otp-btn').style.display = 'none';
+      document.getElementById('otp').readOnly = true;
+    } else {
+      statusDiv.innerHTML = '<span style="color: var(--sc-danger);">Invalid OTP. Please try again.</span>';
+    }
+  } catch (error) {
+    statusDiv.innerHTML = '<span style="color: var(--sc-danger);">An error occurred. Try again.</span>';
+  }
+}
+</script>
+{% endblock %}
