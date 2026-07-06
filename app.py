@@ -239,9 +239,9 @@ def admin_profile():
         cursor = conn.cursor()
         if password:
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-            cursor.execute("UPDATE admin SET name=?, email=?, password=? WHERE admin_id=?", (name, email, hashed_password, admin_id))
+            cursor.execute("UPDATE admin SET name=?, password=? WHERE admin_id=?", (name, hashed_password, admin_id))
         else:
-            cursor.execute("UPDATE admin SET name=?, email=? WHERE admin_id=?", (name, email, admin_id))
+            cursor.execute("UPDATE admin SET name=? WHERE admin_id=?", (name, admin_id))
 
         if profile_image:
             filename = secure_filename(profile_image.filename)
@@ -894,9 +894,9 @@ def user_profile():
         cursor = conn.cursor()
         if password:
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-            cursor.execute("UPDATE users SET name=?, email=?, password=? WHERE user_id=?", (name, email, hashed_password, user_id))
+            cursor.execute("UPDATE users SET name=?, password=? WHERE user_id=?", (name, hashed_password, user_id))
         else:
-            cursor.execute("UPDATE users SET name=?, email=? WHERE user_id=?", (name, email, user_id))
+            cursor.execute("UPDATE users SET name=? WHERE user_id=?", (name, user_id))
 
         if profile_image:
             filename = secure_filename(profile_image.filename)
