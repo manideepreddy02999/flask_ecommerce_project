@@ -29,7 +29,8 @@ mail = Mail(app)
 razorpay_client = razorpay.Client(auth=(app.config['RAZORPAY_KEY_ID'], app.config['RAZORPAY_KEY_SECRET']))
 
 UPLOAD_FOLDER = app.config['UPLOAD_FOLDER']
-PROFILE_IMG_FOLDER = app.config['PROFILE_IMG_FOLDER']
+ADMIN_PROFILE_IMG_FOLDER = app.config['ADMIN_PROFILE_IMG_FOLDER']
+USER_PROFILE_IMG_FOLDER = app.config['USER_PROFILE_IMG_FOLDER']
 
 
 
@@ -244,7 +245,7 @@ def admin_profile():
 
         if profile_image:
             filename = secure_filename(profile_image.filename)
-            profile_image_path = os.path.join(PROFILE_IMG_FOLDER, filename)
+            profile_image_path = os.path.join(ADMIN_PROFILE_IMG_FOLDER, filename)
             profile_image.save(profile_image_path)
             cursor.execute("UPDATE admin SET profile_image=? WHERE admin_id=?", (filename, admin_id))
 
@@ -899,7 +900,7 @@ def user_profile():
 
         if profile_image:
             filename = secure_filename(profile_image.filename)
-            profile_image_path = os.path.join(PROFILE_IMG_FOLDER, filename)
+            profile_image_path = os.path.join(USER_PROFILE_IMG_FOLDER, filename)
             profile_image.save(profile_image_path)
             cursor.execute("UPDATE users SET profile_image=? WHERE user_id=?", (filename, user_id))
 

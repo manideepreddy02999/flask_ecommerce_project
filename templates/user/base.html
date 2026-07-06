@@ -32,8 +32,9 @@
         <div class="sc-nav__links" id="nav-links">
             {% if session.get('user_id') %}
             <a href="{{ url_for('user_dashboard') }}" class="sc-nav__link">Home</a>
-            <a href="{{ url_for('view_cart') }}" class="sc-nav__link">Cart</a>
             <a href="{{ url_for('my_orders') }}" class="sc-nav__link">Orders</a>
+            <a href="{{ url_for('view_cart') }}" class="sc-nav__link">Cart</a>
+
             <a href="{{ url_for('user_profile') }}" class="sc-nav__link">Profile</a>
             <a href="{{ url_for('user_logout') }}" class="sc-btn sc-btn--ghost sc-btn--sm"
                 style="transition: all 0.2s ease;"
