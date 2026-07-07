@@ -544,13 +544,19 @@ select {
     padding: var(--sc-space-8);
     gap: var(--sc-space-4);
     transform: translateX(100%);
-    transition: transform var(--sc-duration-normal) var(--sc-ease-default);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform var(--sc-duration-normal) var(--sc-ease-default),
+                opacity var(--sc-duration-normal) var(--sc-ease-default),
+                visibility var(--sc-duration-normal) var(--sc-ease-default);
     z-index: var(--sc-z-overlay);
   }
 
   .sc-nav__links.is-open,
   .nav-links.is-open {
     transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
   }
 
   .sc-nav,
