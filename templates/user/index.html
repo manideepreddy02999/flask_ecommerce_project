@@ -164,8 +164,10 @@
       {% for product in trending_products %}
       <div class="product-card">
         <div class="product-card__image-wrap">
+          <a href="/user/product/{{ product.product_id }}">
           <img src="{{ url_for('static', filename='uploads/product_images/' + product.image_name) }}"
             alt="{{ product.name }}" class="product-card__image" />
+          </a>
           <span class="product-card__badge">{{ product.category }}</span>
         </div>
         <div class="product-card__body">
