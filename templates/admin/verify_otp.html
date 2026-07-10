@@ -1,5 +1,8 @@
 {% extends "admin/base.html" %} {% block title %}SmartCart - Verify OTP{%
-endblock %} {% block content %}
+endblock %} {% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/verify_otp.css') }}">
+{% endblock %}
+{% block content %}
 <div class="auth-container">
   <div class="glass-card">
     <h2 class="auth-title">Verify Your OTP</h2>

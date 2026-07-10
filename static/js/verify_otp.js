@@ -1,41 +1,41 @@
-function verifyOTP(){
+function verifyOTP() {
 
-    let otp=document.getElementById("otp").value;
+    let otp = document.getElementById("otp").value;
 
-    fetch("/verify-otp",{
+    fetch("/verify-otp", {
 
-        method:"POST",
+        method: "POST",
 
-        headers:{
-            "Content-Type":"application/x-www-form-urlencoded"
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
         },
 
-        body:"otp="+otp
+        body: "otp=" + otp
 
     })
 
-    .then(res=>res.json())
+        .then(res => res.json())
 
-    .then(data=>{
+        .then(data => {
 
-        let status=document.getElementById("otp-status");
+            let status = document.getElementById("otp-status");
 
-        if(data.success){
+            if (data.success) {
 
-            status.innerHTML="✔ OTP Verified";
-            status.className="success";
+                status.innerHTML = "✔ OTP Verified";
+                status.className = "success";
 
-            document.getElementById("password-section").style.display="block";
+                document.getElementById("password-section").style.display = "block";
 
-        }
+            }
 
-        else{
+            else {
 
-            status.innerHTML="✖ Invalid OTP";
-            status.className="error";
+                status.innerHTML = "✖ Invalid OTP";
+                status.className = "error";
 
-        }
+            }
 
-    });
+        });
 
 }

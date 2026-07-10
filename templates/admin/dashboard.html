@@ -1,17 +1,19 @@
 {% extends "admin/base.html" %}
 {% block title %}SmartCart - Dashboard{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dashboard.css') }}">
+{% endblock %}
 {% block content %}
-<div class="sc-dashboard sc-animate-fade-in-up">
-  <!-- Page Header -->
-  <div class="sc-dashboard__header">
-    <div>
-      <h2 style="margin-bottom: var(--sc-space-1);">Admin Dashboard</h2>
-      <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
-        Welcome back, <span class="text-accent" style="font-weight: 600;">{{ session['admin_name'] }}</span>!
+<div class="ad-dashboard sc-animate-fade-in-up">
+
+  <div class="ad-header">
+    <div class="ad-header__title-group">
+      <h2 class="ad-header__title">Admin Dashboard</h2>
+      <p class="ad-header__subtitle">
+        Welcome back, <span class="ad-u-text-brand">{{ session['admin_name'] }}</span>! Here's a snapshot of your store.
       </p>
     </div>
-
-    <a href="{{ url_for('add_product') }}" class="sc-btn sc-btn--primary">
+    <a href="{{ url_for('add_product') }}" class="ad-header__btn">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -22,43 +24,68 @@
   </div>
 
   {% if products %}
-  <!-- Stats Bar -->
-  <div class="sc-stats" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-    <div class="sc-stat">
-      <div class="sc-stat__label">Total Products</div>
-      <div class="sc-stat__value">{{ products|length }}</div>
+
+  <div class="ad-stats-grid">
+    <div class="ad-stat-card">
+      <div class="ad-stat-card__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+      </div>
+      <div class="ad-stat-card__content">
+        <div class="ad-stat-card__label">Total Products</div>
+        <div class="ad-stat-card__value">{{ products|length }}</div>
+      </div>
     </div>
-    <div class="sc-stat">
-      <div class="sc-stat__label">Categories</div>
-      <div class="sc-stat__value">{{ products|map(attribute='category')|unique|list|length }}</div>
+
+    <div class="ad-stat-card">
+      <div class="ad-stat-card__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+      </div>
+      <div class="ad-stat-card__content">
+        <div class="ad-stat-card__label">Categories</div>
+        <div class="ad-stat-card__value">{{ products|map(attribute='category')|unique|list|length }}</div>
+      </div>
     </div>
-    <div class="sc-stat">
-      <div class="sc-stat__label">Best Price From</div>
-      <div class="sc-stat__value" style="color: var(--sc-success);">₹{{ products|map(attribute='price')|min }}</div>
+
+    <div class="ad-stat-card">
+      <div class="ad-stat-card__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+      </div>
+      <div class="ad-stat-card__content">
+        <div class="ad-stat-card__label">Best Price From</div>
+        <div class="ad-stat-card__value ad-stat-card__value--success">₹{{ products|map(attribute='price')|min }}</div>
+      </div>
     </div>
   </div>
   {% else %}
-  <div class="glass-card">
-    <div class="sc-empty">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="sc-empty__icon">
-        <path
-          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-        </path>
-        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-        <line x1="12" y1="22.08" x2="12" y2="12"></line>
-      </svg>
-      <h3 class="sc-empty__title">No products yet</h3>
-      <p class="sc-empty__text">Get started by adding your first product to the catalog.</p>
-      <a href="{{ url_for('add_product') }}" class="sc-btn sc-btn--primary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
-        Add First Product
-      </a>
-    </div>
+
+  <div class="ad-empty">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="ad-empty__icon">
+      <path
+        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+      </path>
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+      <line x1="12" y1="22.08" x2="12" y2="12"></line>
+    </svg>
+    <h3 class="ad-empty__title">No products yet</h3>
+    <p class="ad-empty__text">Get started by adding your first product to the catalog.</p>
+    <a href="{{ url_for('add_product') }}" class="ad-empty__btn">
+      Add First Product
+    </a>
   </div>
   {% endif %}
 </div>

@@ -1,13 +1,4 @@
-/* =========================================================================
-   SmartCart — Cart Page JavaScript
-   Handles quantity updates (AJAX) + checkbox selection for order totals
-   ========================================================================= */
 
-/**
- * Recalculate the displayed Subtotal / Grand Total based on CHECKED items only.
- * Reads the current quantity from the DOM (#qty-{pid}) so it stays in sync
- * after AJAX increment/decrement updates.
- */
 function recalcSelectedTotal() {
     const checkboxes = document.querySelectorAll('.cart-item-checkbox');
     let selectedTotal = 0;
@@ -15,13 +6,11 @@ function recalcSelectedTotal() {
 
     checkboxes.forEach(cb => {
         const pid = cb.dataset.pid;
-        const price = parseFloat(cb.dataset.price);
+        const price = parseInt(cb.dataset.price);
 
-        // Always read quantity from the DOM — it's the source of truth after AJAX
         const qtyEl = document.getElementById(`qty-${pid}`);
         const qty = qtyEl ? parseInt(qtyEl.textContent, 10) : parseInt(cb.dataset.qty, 10);
 
-        // Toggle visual dimming on the row
         const row = document.getElementById(`row-${pid}`);
         if (row) {
             if (cb.checked) {
@@ -37,7 +26,6 @@ function recalcSelectedTotal() {
         }
     });
 
-    // Update the Order Summary panel
     const subtotalEl = document.getElementById('subtotal');
     const grandtotalEl = document.getElementById('grandtotal');
     const selectedCountEl = document.getElementById('selected-count');
@@ -49,7 +37,6 @@ function recalcSelectedTotal() {
         selectedCountEl.textContent = `${selectedCount} of ${total} item${total !== 1 ? 's' : ''} selected`;
     }
 
-    // Sync "Select All" checkbox state
     const selectAll = document.getElementById('select-all');
     if (selectAll) {
         selectAll.checked = selectedCount === checkboxes.length && checkboxes.length > 0;
@@ -57,10 +44,6 @@ function recalcSelectedTotal() {
 }
 
 
-/**
- * AJAX cart update — increment / decrement / remove
- * After the server responds, update the DOM and recalculate selected totals.
- */
 function updateCart(pid, action) {
     fetch(`/user/cart/${action}/${pid}`, {
         method: 'POST',
@@ -68,49 +51,43 @@ function updateCart(pid, action) {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            if (data.cart_empty) {
-                window.location.reload();
-                return;
-            }
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (data.cart_empty) {
+                    window.location.reload();
+                    return;
+                }
 
-            if (data.removed) {
-                const row = document.getElementById(`row-${pid}`);
-                if (row) row.remove();
+                if (data.removed) {
+                    const row = document.getElementById(`row-${pid}`);
+                    if (row) row.remove();
+                } else {
+                    const qtyEl = document.getElementById(`qty-${pid}`);
+                    const itemTotalEl = document.getElementById(`item-total-${pid}`);
+
+                    if (qtyEl) qtyEl.textContent = data.quantity;
+                    if (itemTotalEl) itemTotalEl.textContent = '₹' + data.item_total;
+
+                    const cb = document.querySelector(`.cart-item-checkbox[data-pid="${pid}"]`);
+                    if (cb) cb.dataset.qty = data.quantity;
+                }
+
+                recalcSelectedTotal();
             } else {
-                // Update quantity display
-                const qtyEl = document.getElementById(`qty-${pid}`);
-                const itemTotalEl = document.getElementById(`item-total-${pid}`);
-
-                if (qtyEl) qtyEl.textContent = data.quantity;
-                if (itemTotalEl) itemTotalEl.textContent = '₹' + data.item_total;
-
-                // Keep the checkbox data-qty in sync
-                const cb = document.querySelector(`.cart-item-checkbox[data-pid="${pid}"]`);
-                if (cb) cb.dataset.qty = data.quantity;
+                console.error('Failed to update cart');
             }
-
-            // Recalculate totals based on checked items (not the server's grand_total)
-            recalcSelectedTotal();
-        } else {
-            console.error('Failed to update cart');
-        }
-    })
-    .catch(error => console.error('Error:', error));
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 
-/* ── Event Listeners (run once DOM is ready) ── */
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Individual item checkboxes
     document.querySelectorAll('.cart-item-checkbox').forEach(cb => {
         cb.addEventListener('change', recalcSelectedTotal);
     });
 
-    // Select All checkbox
     const selectAll = document.getElementById('select-all');
     if (selectAll) {
         selectAll.addEventListener('change', function () {
@@ -122,13 +99,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Initial calculation (all checked by default)
     recalcSelectedTotal();
 
-    // Checkout Selection
     const btnCheckout = document.getElementById('btn-proceed-checkout');
     if (btnCheckout) {
-        btnCheckout.addEventListener('click', function(e) {
+        btnCheckout.addEventListener('click', function (e) {
             e.preventDefault();
             const checkedBoxes = document.querySelectorAll('.cart-item-checkbox:checked');
             if (checkedBoxes.length === 0) {
@@ -140,14 +115,13 @@ document.addEventListener('DOMContentLoaded', function () {
             checkedBoxes.forEach(cb => {
                 items.push({
                     pid: cb.dataset.pid,
-                    price: parseFloat(cb.dataset.price),
+                    price: parseInt(cb.dataset.price),
                     quantity: parseInt(cb.dataset.qty, 10),
                     name: cb.dataset.name,
                     image: cb.dataset.image
                 });
             });
 
-            // Make API call to save selection in session
             fetch('/user/cart/checkout_selection', {
                 method: 'POST',
                 headers: {
@@ -155,18 +129,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify({ items: items })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = '/user/checkout';
-                } else {
-                    alert(data.message || "Failed to proceed to checkout.");
-                }
-            })
-            .catch(error => {
-                console.error("Checkout error:", error);
-                alert("Something went wrong.");
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '/user/checkout';
+                    } else {
+                        alert(data.message || "Failed to proceed to checkout.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Checkout error:", error);
+                    alert("Something went wrong.");
+                });
         });
     }
 });

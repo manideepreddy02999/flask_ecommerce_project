@@ -1,11 +1,14 @@
 {% extends "admin/base.html" %}
 {% block title %}SmartCart - Add Product{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/add_product.css') }}">
+{% endblock %}
 {% block content %}
-<div class="auth-container" style="max-width: 560px;">
-  <div class="glass-card sc-animate-fade-in-up">
-    <!-- Header -->
-    <div class="sc-u-text-center sc-u-mb-8">
-      <div class="sc-avatar sc-avatar--lg sc-u-mx-auto" style="margin-bottom: var(--sc-space-4);">
+<div class="apf-container">
+  <div class="apf-card sc-animate-fade-in-up">
+
+    <div class="apf-header">
+      <div class="apf-header__icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path
@@ -15,75 +18,58 @@
           <line x1="12" y1="22.08" x2="12" y2="12"></line>
         </svg>
       </div>
-      <h2 class="auth-title" style="margin-bottom: var(--sc-space-2);">Add New Product</h2>
-      <p class="sc-u-text-sm" style="color: var(--sc-text-muted);">Fill in the details below to add a product to your
-        catalog.</p>
+      <h2 class="apf-header__title">Add New Product</h2>
+      <p class="apf-header__subtitle">Fill in the details below to add a product to your catalog.</p>
     </div>
 
-    <form method="POST" action="{{ url_for('add_product') }}" enctype="multipart/form-data" id="add-product-form">
-      <div class="form-group">
-        <label for="product-name">Product Name</label>
-        <input type="text" name="name" id="product-name" required placeholder="e.g. Wireless Headphones" />
+    <form method="POST" action="{{ url_for('add_product') }}" enctype="multipart/form-data" class="apf-form">
+      <div class="apf-group">
+        <label for="product-name" class="apf-label">Product Name</label>
+        <input type="text" name="name" id="product-name" class="apf-input" required
+          placeholder="e.g. Wireless Headphones" />
       </div>
 
-      <div class="form-group">
-        <label for="product-description">Description</label>
-        <textarea name="description" id="product-description" required
+      <div class="apf-group">
+        <label for="product-description" class="apf-label">Description</label>
+        <textarea name="description" id="product-description" class="apf-input" required
           placeholder="Describe the product features, specifications..." rows="4"></textarea>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-space-4);">
-        <div class="form-group">
-          <label for="product-category">Category</label>
-          <input type="text" name="category" id="product-category" required placeholder="e.g. Electronics" />
+      <div class="apf-grid">
+        <div class="apf-group">
+          <label for="product-category" class="apf-label">Category</label>
+          <input type="text" name="category" id="product-category" class="apf-input" required
+            placeholder="e.g. Electronics" />
         </div>
-        <div class="form-group">
-          <label for="product-price">Price (₹)</label>
-          <input type="number" step="0.01" name="price" id="product-price" required placeholder="0.00" />
+        <div class="apf-group">
+          <label for="product-price" class="apf-label">Price (₹)</label>
+          <input type="number" step="1" name="price" id="product-price" class="apf-input" required placeholder="999"
+            min="0" />
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="product-image">Product Image</label>
-        <div class="sc-file-upload" id="file-upload-zone" style="
-          border: 2px dashed var(--sc-border-strong);
-          border-radius: var(--sc-radius-lg);
-          padding: var(--sc-space-8) var(--sc-space-6);
-          text-align: center;
-          cursor: pointer;
-          transition: var(--sc-transition-all);
-          background: var(--sc-bg-surface);
-        ">
+      <div class="apf-group">
+        <label for="product-image" class="apf-label">Product Image</label>
+        <div class="apf-upload" id="file-upload-zone">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-            style="color: var(--sc-text-muted); margin-bottom: var(--sc-space-3); display: block; margin-left: auto; margin-right: auto;">
+            class="apf-upload__icon">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
             <circle cx="8.5" cy="8.5" r="1.5"></circle>
             <polyline points="21 15 16 10 5 21"></polyline>
           </svg>
-          <p style="color: var(--sc-text-secondary); font-size: var(--sc-text-sm); margin-bottom: var(--sc-space-1);">
-            Click to upload or drag & drop
-          </p>
-          <p style="color: var(--sc-text-muted); font-size: var(--sc-text-xs);" id="file-name-display">
-            PNG, JPG, WEBP up to 5MB
-          </p>
+          <p class="apf-upload__text">Click to upload or drag & drop</p>
+          <p class="apf-upload__subtext" id="file-name-display">PNG, JPG, WEBP up to 5MB</p>
           <input type="file" name="image" id="product-image" accept="image/*" required style="display: none;" />
         </div>
       </div>
 
-      <!-- Image Preview -->
-      <div id="image-preview-container" class="sc-u-hidden"
-        style="margin-bottom: var(--sc-space-5); text-align: center;">
-        <img id="image-preview" src="" alt="Preview" style="
-          max-width: 100%;
-          max-height: 200px;
-          border-radius: var(--sc-radius-lg);
-          border: 1px solid var(--sc-border);
-          object-fit: contain;
-        " />
+
+      <div id="image-preview-container" class="apf-preview sc-u-hidden">
+        <img id="image-preview" src="" alt="Preview" class="apf-preview__img" />
       </div>
 
-      <button type="submit" class="sc-btn sc-btn--primary sc-btn--lg w-100" style="margin-top: var(--sc-space-2);">
+      <button type="submit" class="apf-btn apf-btn--primary">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -109,19 +95,16 @@
 
     zone.addEventListener('dragover', (e) => {
       e.preventDefault();
-      zone.style.borderColor = 'var(--sc-brand-500)';
-      zone.style.background = 'rgba(0, 188, 212, 0.04)';
+      zone.classList.add('apf-upload--active');
     });
 
     zone.addEventListener('dragleave', () => {
-      zone.style.borderColor = '';
-      zone.style.background = '';
+      zone.classList.remove('apf-upload--active');
     });
 
     zone.addEventListener('drop', (e) => {
       e.preventDefault();
-      zone.style.borderColor = '';
-      zone.style.background = '';
+      zone.classList.remove('apf-upload--active');
       if (e.dataTransfer.files.length) {
         input.files = e.dataTransfer.files;
         handleFileSelect(e.dataTransfer.files[0]);
@@ -134,8 +117,7 @@
 
     function handleFileSelect(file) {
       display.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-      display.style.color = 'var(--sc-brand-400)';
-      zone.style.borderColor = 'var(--sc-success)';
+      zone.classList.add('apf-upload--success');
 
       const reader = new FileReader();
       reader.onload = function (e) {

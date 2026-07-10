@@ -1,5 +1,8 @@
 {% extends "user/base.html" %}
 {% block title %}SmartCart - Sign Up{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user/signup.css') }}">
+{% endblock %}
 {% block content %}
 <div class="sc-auth auth-container sc-animate-fade-in-up">
   <div class="sc-auth__card glass-card">
@@ -7,15 +10,16 @@
     <p class="sc-auth__subtitle">Join SmartCart and start shopping today</p>
 
     <form method="POST" action="{{ url_for('user_signup') }}">
-      <div class="form-group">
-        <label for="signup-name">Full Name</label>
-        <input type="text" id="signup-name" name="name" required placeholder="John Doe" />
+      <div class="sc-form-group">
+        <label class="sc-form-label" for="signup-name">Full Name</label>
+        <input class="sc-form-input" type="text" id="signup-name" name="name" required placeholder="John Doe" />
       </div>
-      <div class="form-group">
-        <label for="signup-email">Email Address</label>
-        <input type="email" id="signup-email" name="email" required placeholder="you@example.com" />
+      <div class="sc-form-group">
+        <label class="sc-form-label" for="signup-email">Email Address</label>
+        <input class="sc-form-input" type="email" id="signup-email" name="email" required
+          placeholder="you@example.com" />
       </div>
-      <button type="submit" class="sc-btn sc-btn--primary sc-btn--block mt-4">Send OTP</button>
+      <button type="submit" class="sc-btn--primary">Send OTP</button>
     </form>
 
 
@@ -24,7 +28,7 @@
     </div>
 
     <div class="sc-divider">or</div>
-    <div style="text-align: center; margin-bottom: var(--sc-space-4);">
+    <div style="text-align: center;">
       <a href="{{ url_for('admin_signin') }}" class="sc-btn sc-btn--ghost" style="width: 100%;">Admin Login</a>
     </div>
   </div>

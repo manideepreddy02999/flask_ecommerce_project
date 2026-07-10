@@ -1,70 +1,50 @@
 {% extends "user/base.html" %}
 {% block title %}SmartCart - {{ product.name }}{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user/product_details.css') }}">
+{% endblock %}
 {% block content %}
 <div class="sc-dashboard sc-animate-fade-in-up">
-  <div style="margin-bottom: var(--sc-space-6);">
-    <nav style="display: flex; align-items: center; gap: var(--sc-space-2); font-size: var(--sc-text-sm); color: var(--sc-text-muted);">
-      <a href="/user/products" style="color: var(--sc-text-muted); transition: color 0.2s;">Products</a>
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-      <span style="color: var(--sc-text-primary);">{{ product.name }}</span>
-    </nav>
-  </div>
+  <nav class="sc-breadcrumbs">
+    <a href="/user/products">Products</a>
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+    <span>{{ product.name }}</span>
+  </nav>
 
-  <div class="glass-card" style="padding: 0; overflow: hidden;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; min-height: 400px;" id="product-detail-grid">
-      <div style="
-        position: relative; overflow: hidden;
-        background: var(--sc-bg-surface-alt);
-        display: flex; align-items: center; justify-content: center;
-      ">
-        <img src="{{ url_for('static', filename='uploads/product_images/' + product.image_name) }}"
-          alt="{{ product.name }}"
-          style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
-          onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'" />
-        <span class="sc-badge sc-badge--brand"
-          style="position: absolute; top: var(--sc-space-4); left: var(--sc-space-4);">
+  <div class="product-detail-card">
+    <div class="product-detail-grid">
+
+
+      <div class="product-image-container">
+        <span class="sc-badge sc-badge--brand" style="position: absolute; top: 1.5rem; left: 1.5rem; z-index: 2;">
           {{ product.category }}
         </span>
+        <div class="product-image-wrapper">
+          <img src="{{ url_for('static', filename='uploads/product_images/' + product.image_name) }}"
+            alt="{{ product.name }}" />
+        </div>
       </div>
 
-      <div style="padding: var(--sc-space-10); display: flex; flex-direction: column; justify-content: center;">
-        <div style="margin-bottom: var(--sc-space-2);">
-          <span style="font-size: var(--sc-text-xs); font-weight: var(--sc-weight-semibold); color: var(--sc-brand-400); text-transform: uppercase; letter-spacing: 0.05em;">
-            {{ product.category }}
-          </span>
-        </div>
 
-        <h1 style="font-size: var(--sc-text-3xl); font-weight: var(--sc-weight-bold); margin-bottom: var(--sc-space-4); line-height: var(--sc-leading-tight);">
-          {{ product.name }}
-        </h1>
 
-        <div style="
-          display: inline-flex; align-items: baseline; gap: var(--sc-space-2);
-          margin-bottom: var(--sc-space-6);
-          padding: var(--sc-space-3) var(--sc-space-5);
-          background: rgba(0, 188, 212, 0.08);
-          border-radius: var(--sc-radius-lg);
-          width: fit-content;
-        ">
-          <span style="font-size: var(--sc-text-2xl); font-weight: var(--sc-weight-bold); color: var(--sc-brand-400);">
-            ₹{{ product.price }}
-          </span>
-        </div>
+      <div class="product-info-container">
+        <div class="product-category">{{ product.category }}</div>
+        <h1 class="product-title">{{ product.name }}</h1>
+        <div class="product-price">₹{{ product.price }}</div>
 
-        <div style="height: 1px; background: var(--sc-border); margin-bottom: var(--sc-space-6);"></div>
-
-        <div style="margin-bottom: var(--sc-space-8);">
-          <h6 style="margin-bottom: var(--sc-space-3);">Description</h6>
-          <p style="line-height: var(--sc-leading-relaxed); color: var(--sc-text-secondary);">
+        <div>
+          <h6 class="product-description-label">Description</h6>
+          <p class="product-description">
             {{ product.description }}
           </p>
         </div>
 
-        <div style="display: flex; gap: var(--sc-space-3); flex-wrap: wrap;">
-          <a href="/user/add-to-cart/{{ product.product_id }}" class="sc-btn" style="background: rgba(0, 210, 255, 0.1); color: #00d2ff; border: 1px solid rgba(0, 210, 255, 0.3);">
+        <div class="product-action-grid">
+          <a href="/user/add-to-cart/{{ product.product_id }}" class="sc-btn btn-yellow"
+            style="text-align: center; padding: 0.75rem 1rem; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="9" cy="21" r="1"></circle>
@@ -73,14 +53,18 @@
             </svg>
             Add to Cart
           </a>
-          <a href="/user/buy-now/{{ product.product_id }}" class="sc-btn sc-btn--primary">
+          <a href="/user/buy-now/{{ product.product_id }}" class="sc-btn hover-lift-purple"
+            style="text-align: center; padding: 0.75rem 1rem; font-size: 0.95rem; background: linear-gradient(90deg, #8b5cf6 0%, #3a7bd5 100%); color: white; border: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7"></path>
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
             </svg>
             Buy Now
           </a>
-          <a href="/user/products" class="sc-btn" style="background: rgba(255, 255, 255, 0.05); color: var(--sc-text-secondary); border: 1px solid rgba(255,255,255,0.1);">
+          <a href="/user/products" class="sc-btn hover-no-change product-action-full"
+            style="text-align: center; padding: 0.75rem 1rem; font-size: 0.95rem; border: 1px solid #e2e8f0; background: #f8fafc; color: #475569; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 8px; transition: border-color 0.2s, color 0.2s;"
+            onmouseover="this.style.borderColor='#cbd5e1'; this.style.color='#0f172a';"
+            onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#475569';">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -90,15 +74,8 @@
           </a>
         </div>
       </div>
+
     </div>
   </div>
 </div>
-
-<style>
-  @media (max-width: 768px) {
-    #product-detail-grid {
-      grid-template-columns: 1fr !important;
-    }
-  }
-</style>
 {% endblock %}

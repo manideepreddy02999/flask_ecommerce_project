@@ -493,7 +493,7 @@ def admin_logout():
     flash("You have been logged out.", "info")
     return redirect(url_for('index'))
 
-# user routes
+
 
 @app.route('/user')
 def user_index():
@@ -740,7 +740,7 @@ def add_to_cart(product_id):
     else:
         cart[pid] = {
             'name': product['name'],
-            'price': float(product['price']),
+            'price': int(product['price']),
             'image': product['image_name'],
             'quantity': 1
         }
@@ -748,7 +748,7 @@ def add_to_cart(product_id):
     session[key] = cart
 
     flash("Item added to cart!", "success")
-    # return redirect('/user/cart')    
+    
     return redirect(request.referrer) 
 
 @app.route('/user/buy-now/<int:product_id>')
@@ -771,7 +771,7 @@ def buy_now(product_id):
     session['checkout_items'] = [{
         'pid': str(product_id),
         'name': product['name'],
-        'price': float(product['price']),
+        'price': int(product['price']),
         'image': product['image_name'],
         'quantity': 1
     }]
@@ -979,7 +979,7 @@ def checkout():
             }
             display_address = ", ".join(filter(None, fields))
 
-    grand_total = sum(float(item['price']) * int(item['quantity']) for item in checkout_items)
+    grand_total = sum(int(item['price']) * int(item['quantity']) for item in checkout_items)
 
     return render_template('user/checkout.html', 
                            checkout_items=checkout_items, 
@@ -1030,8 +1030,8 @@ def user_pay():
         flash("Cart is empty.", "warning")
         return redirect('/user/cart')
 
-    grand_total = sum(float(item['price']) * int(item['quantity']) for item in checkout_items)
-    order_amount = int(grand_total * 100) # paise
+    grand_total = sum(int(item['price']) * int(item['quantity']) for item in checkout_items)
+    order_amount = int(grand_total * 100) 
     
     try:
         razorpay_order = razorpay_client.order.create({
@@ -1087,7 +1087,7 @@ def verify_payment():
         flash("Cart is empty. Cannot create order.", "danger")
         return redirect('/user/products')
 
-    total_amount = sum(float(item['price']) * int(item['quantity']) for item in checkout_items)
+    total_amount = sum(int(item['price']) * int(item['quantity']) for item in checkout_items)
 
     conn = get_db()
     cursor = conn.cursor()
@@ -1169,7 +1169,7 @@ def my_orders():
     conn = get_db()
     cursor = conn.cursor()
 
-    # Check if orders table exists first, if not just return empty
+    
     try:
         cursor.execute("SELECT * FROM orders WHERE user_id=? ORDER BY created_at DESC", (session['user_id'],))
         orders = cursor.fetchall()
@@ -1230,7 +1230,7 @@ def download_invoice(order_id):
  
     return response
 
-# Forgot Password Routes - Admin
+
 @app.route('/admin-forgot-password', methods=['GET', 'POST'])
 def admin_forgot_password():
     if request.method == 'GET':
@@ -1301,7 +1301,7 @@ def admin_reset_password():
     flash("Password reset successfully! Please sign in with your new password.", "success")
     return redirect("/admin-signin")
 
-# Forgot Password Routes - User
+
 @app.route('/user-forgot-password', methods=['GET', 'POST'])
 def user_forgot_password():
     if request.method == 'GET':

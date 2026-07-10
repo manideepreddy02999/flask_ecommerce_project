@@ -1,5 +1,8 @@
 {% extends "user/base.html" %}
 {% block title %}SmartCart - Verify OTP{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user/verify_otp.css') }}">
+{% endblock %}
 {% block content %}
 <div class="sc-auth auth-container sc-animate-fade-in-up">
   <div class="sc-auth__card glass-card">
@@ -10,7 +13,7 @@
         <input type="text" id="otp" name="otp" required placeholder="123456" />
       </div>
 
-      <button type="button" class="sc-btn sc-btn--primary sc-btn--block mt-4" onclick="verifyUserOTP()">
+      <button type="button" class="sc-btn--primary" onclick="verifyUserOTP()">
         Verify OTP
       </button>
 
@@ -21,7 +24,7 @@
           <label>Create Password</label>
           <input type="password" name="password" required placeholder="Must be at least 8 characters" />
         </div>
-        <button type="submit" class="sc-btn sc-btn--primary sc-btn--block">
+        <button type="submit" class="sc-btn--primary">
           Complete Registration
         </button>
       </div>

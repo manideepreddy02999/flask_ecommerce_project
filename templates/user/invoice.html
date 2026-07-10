@@ -100,9 +100,9 @@
                 <strong>Address:</strong><br>
                 <span style="color: #555;">
                     {% if user_address %}
-                        {{ user_address | replace('#$#$', ',<br>') | safe }}.
+                    {{ user_address | replace('#$#$', ',<br>') | safe }}.
                     {% else %}
-                        Not provided
+                    Not provided
                     {% endif %}
                 </span>
             </div>

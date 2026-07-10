@@ -1,23 +1,36 @@
 {% extends "user/base.html" %}
 {% block title %}SmartCart - Shop Smart, Live Better{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user/index.css') }}">
+{% endblock %}
 {% block content %}
-<div class="sc-hero sc-animate-fade-in-up" style="padding-top: 0.5rem;">
+<div class="sc-hero sc-animate-fade-in-up">
   <style>
     @keyframes seamless-marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-100%);
+      }
     }
+
+    body {
+      overflow-x: hidden;
+    }
+
     .marquee-container {
       display: flex;
       width: 100vw;
-      margin-left: calc(-50vw + 50%);
-      margin-bottom: var(--sc-space-8);
-      background: linear-gradient(90deg, #00d2ff, #3a7bd5, #8b5cf6);
-      padding: 6px 0;
-      box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+      margin-bottom: 0;
+      background: #1a1a1a;
+      padding: 10px 0;
+      box-shadow: none;
       overflow: hidden;
       white-space: nowrap;
     }
+
     .marquee-content {
       display: flex;
       flex-shrink: 0;
@@ -27,231 +40,199 @@
       font-size: var(--sc-text-sm);
       letter-spacing: 0.5px;
     }
-    .marquee-content:hover {
+
+    .marquee-container:hover .marquee-content {
       animation-play-state: paused;
     }
+
     .marquee-item {
       padding: 0 2rem;
     }
   </style>
-  <div class="marquee-container">
-    <div class="marquee-content">
-      <span class="marquee-item">⚡ Flash Deals Live Now</span>
-      <span class="marquee-item">🔥 Mega Sale Up to 70% OFF</span>
-      <span class="marquee-item">🚚 Free Delivery Above ₹999</span>
-      <span class="marquee-item">💳 Extra 10% Bank Discount for user</span>
-      <span class="marquee-item">⚡ Flash Deals Live Now</span>
-      <span class="marquee-item">🔥 Mega Sale Up to 70% OFF</span>
-      <span class="marquee-item">🚚 Free Delivery Above ₹999</span>
-      <span class="marquee-item">💳 Extra 10% Bank Discount for user</span>
-    </div>
-    <div class="marquee-content" aria-hidden="true">
-      <span class="marquee-item">⚡ Flash Deals Live Now</span>
-      <span class="marquee-item">🔥 Mega Sale Up to 70% OFF</span>
-      <span class="marquee-item">🚚 Free Delivery Above ₹999</span>
-      <span class="marquee-item">💳 Extra 10% Bank Discount for user</span>
-      <span class="marquee-item">⚡ Flash Deals Live Now</span>
-      <span class="marquee-item">🔥 Mega Sale Up to 70% OFF</span>
-      <span class="marquee-item">🚚 Free Delivery Above ₹999</span>
-      <span class="marquee-item">💳 Extra 10% Bank Discount for user</span>
-    </div>
-  </div>
-  <div class="sc-hero__badge">
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="9" cy="21" r="1"></circle>
-      <circle cx="20" cy="21" r="1"></circle>
-      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-    </svg>
-    Your Premium Shopping Destination
-  </div>
 
-  <h1 class="sc-hero__title">
-    Shop Smart with <span class="sc-u-text-brand">SmartCart</span>
-  </h1>
 
-  <p class="sc-hero__subtitle">
-    Discover amazing products at unbeatable prices. Fast delivery, secure payments, and a seamless shopping experience —
-    all in one place.
-  </p>
 
-  <div class="sc-hero__actions">
-    {% if session.get('user_id') %}
-    <a href="{{ url_for('user_dashboard') }}" class="sc-btn sc-btn--lg" style="background: linear-gradient(90deg, #00d2ff 0%, #8b5cf6 100%); 
-              box-shadow: 0 8px 24px rgba(0, 210, 255, 0.4); 
-              border: none; 
-              color: white; 
-              text-shadow: 0 1px 2px rgba(0,0,0,0.2); 
-              transition: transform 0.2s ease, box-shadow 0.2s ease;"
-      onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 28px rgba(0, 210, 255, 0.6)';"
-      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(0, 210, 255, 0.4)';">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-      </svg>
-      Browse Products
-    </a>
-    <a href="{{ url_for('view_cart') }}" class="sc-btn sc-btn--ghost sc-btn--lg">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="9" cy="21" r="1"></circle>
-        <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-      </svg>
-      View Cart
-    </a>
-    {% else %}
-    <a href="{{ url_for('user_signin') }}" class="sc-btn sc-btn--primary sc-btn--lg">Start Shopping</a>
-    <a href="{{ url_for('user_signup') }}" class="sc-btn sc-btn--ghost sc-btn--lg">Create Account</a>
-    {% endif %}
-  </div>
 
-</div>
-
-  <!-- Shop by Category Section -->
-  <div class="sc-dashboard sc-animate-fade-in-up" style="margin-top: var(--sc-space-16);">
-    <div class="sc-dashboard__header">
-      <div>
-        <h2 style="margin-bottom: var(--sc-space-1); font-size: var(--sc-text-2xl); font-weight: bold;">Shop by Category</h2>
-        <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
-          Explore our wide range of collections.
-        </p>
-      </div>
-    </div>
-    <div class="sc-stats" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-      {% set colors = ['#8b5cf6', '#f97316', '#22c55e'] %}
-      {% for cat in categories %}
-      {% set color = colors[loop.index0 % 3] %}
-      <a href="/user/products?category={{ cat.category }}" style="text-decoration: none; color: inherit;">
-        <div class="sc-card sc-card--glass sc-card--hover" style="text-align: center; cursor: pointer; border-top: 3px solid {{ color }};">
-          <h3 style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-semibold); color: {{ color }};">
-            {{ cat.category }}
-          </h3>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- Special Offers Section -->
-  <div class="sc-dashboard sc-animate-fade-in-up" style="margin-top: var(--sc-space-16);">
-    <div class="sc-dashboard__header">
-      <div>
-        <h2 style="margin-bottom: var(--sc-space-1); font-size: var(--sc-text-2xl); font-weight: bold;">Special Offers</h2>
-        <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
-          Don't miss out on these exclusive deals.
-        </p>
-      </div>
-    </div>
-    <div class="sc-card sc-card--glass" style="background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(0, 210, 255, 0.3); text-align: center; padding: var(--sc-space-10);">
-      <h3 style="font-size: var(--sc-text-3xl); font-weight: 800; color: var(--sc-brand-400); margin-bottom: var(--sc-space-4);">Get Up to 50% Off!</h3>
-      <p style="font-size: var(--sc-text-lg); color: var(--sc-text-secondary); margin-bottom: var(--sc-space-6);">Use code <strong>SMART50</strong> at checkout on selected items.</p>
-      <a href="/user/products" class="sc-btn sc-btn--primary sc-btn--lg">Shop Offers Now</a>
-    </div>
-  </div>
-
-  <!-- Trending Products Section -->
-  <div class="sc-dashboard sc-animate-fade-in-up" style="margin-top: var(--sc-space-16); margin-bottom: var(--sc-space-16);">
-    <div class="sc-dashboard__header">
-      <div>
-        <h2 style="margin-bottom: var(--sc-space-1); font-size: var(--sc-text-2xl); font-weight: bold;">Trending Products</h2>
-        <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
-          Our most popular items right now.
-        </p>
-      </div>
-      <a href="/user/products" class="sc-btn sc-btn--ghost sc-btn--sm">View All</a>
-    </div>
-    
-    {% if trending_products %}
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--sc-space-6);">
-      {% for product in trending_products %}
-      <div class="sc-card sc-card--glass sc-card--hover" style="padding: 0; display: flex; flex-direction: column; overflow: hidden;">
-        <!-- Product Image -->
-        <div style="position: relative; padding-top: 75%; background: var(--sc-bg-surface-alt); overflow: hidden;">
-          <img src="{{ url_for('static', filename='uploads/product_images/' + product.image_name) }}"
-               alt="{{ product.name }}"
-               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
-               onmouseenter="this.style.transform='scale(1.05)'"
-               onmouseleave="this.style.transform='scale(1)'" />
-          <span class="sc-badge sc-badge--brand" style="position: absolute; top: var(--sc-space-3); right: var(--sc-space-3);">
-            {{ product.category }}
-          </span>
-        </div>
-        
-        <!-- Product Details -->
-        <div style="padding: var(--sc-space-5); display: flex; flex-direction: column; flex: 1;">
-          <h3 style="font-size: var(--sc-text-lg); margin-bottom: var(--sc-space-2); font-weight: var(--sc-weight-semibold); color: var(--sc-text-primary);">
-            {{ product.name }}
-          </h3>
-          
-          <p style="font-size: var(--sc-text-2xl); font-weight: var(--sc-weight-bold); color: var(--sc-brand-400); margin-bottom: var(--sc-space-4);">
-            ₹{{ product.price }}
-          </p>
-          
-          <div style="margin-top: auto; display: flex; flex-direction: column; gap: var(--sc-space-2);">
-            <div style="display: flex; gap: var(--sc-space-2);">
-              <a href="/user/add-to-cart/{{ product.product_id }}" class="sc-btn" style="flex: 1; text-align: center; padding: var(--sc-space-2); background: rgba(0, 210, 255, 0.1); color: #00d2ff; border: 1px solid rgba(0, 210, 255, 0.3);">
-                Add to Cart
-              </a>
-              <a href="/user/buy-now/{{ product.product_id }}" class="sc-btn sc-btn--primary" style="flex: 1; text-align: center; padding: var(--sc-space-2);">
-                Buy Now
-              </a>
-            </div>
-            <a href="/user/product/{{ product.product_id }}" class="sc-btn" style="width: 100%; text-align: center; padding: var(--sc-space-2); background: rgba(255, 255, 255, 0.05); color: var(--sc-text-secondary); border: 1px solid rgba(255,255,255,0.1);">
-              View Details
-            </a>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    {% else %}
-    <p style="color: var(--sc-text-muted);">No trending products available.</p>
-    {% endif %}
-  </div>
-
-  <!-- Feature Cards -->
-  <div class="sc-dashboard sc-animate-fade-in-up" style="margin-bottom: var(--sc-space-16);">
-    <div class="sc-stats"
-      style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); text-align: left;">
-      <div class="sc-card sc-card--glass sc-card--hover">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-          style="color: var(--sc-brand-400); margin-bottom: var(--sc-space-4);">
+  <div class="banner" id="hero-banner">
+    <img src="{{ url_for('static', filename='images/hero_banner.png') }}" alt="SmartCart Hero Banner"
+      class="banner__image">
+    <div class="banner__overlay"></div>
+    <div class="banner__content">
+      <span class="banner__label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="9" cy="21" r="1"></circle>
           <circle cx="20" cy="21" r="1"></circle>
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
         </svg>
-        <h4 style="margin-bottom: var(--sc-space-2); font-size: var(--sc-text-base);">Wide Selection</h4>
-        <p style="font-size: var(--sc-text-sm); color: var(--sc-text-muted); margin: 0;">Browse thousands of products
-          across multiple categories at great prices.</p>
+        Your Shopping Destination
+      </span>
+      <h1 class="banner__title">Shop Smart with <span>SmartCart</span></h1>
+      <p class="banner__subtitle">
+        Discover amazing products at unbeatable prices. Fast delivery, secure payments, and a seamless shopping
+        experience — all in one place.
+      </p>
+      <div class="banner__actions">
+        {% if session.get('user_id') %}
+        <a href="{{ url_for('user_products_list') }}" class="banner__btn banner__btn--primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          Browse Products
+        </a>
+        <a href="{{ url_for('view_cart') }}" class="banner__btn banner__btn--ghost">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          View Cart
+        </a>
+        {% else %}
+        <a href="{{ url_for('user_signin') }}" class="banner__btn banner__btn--primary">Start Shopping</a>
+        <a href="{{ url_for('user_signup') }}" class="banner__btn banner__btn--ghost">Create Account</a>
+        {% endif %}
       </div>
+    </div>
+  </div>
 
-      <div class="sc-card sc-card--glass sc-card--hover">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-          style="color: var(--sc-accent-400); margin-bottom: var(--sc-space-4);">
+
+
+</div>
+
+
+<section class="section section--categories">
+  <div class="section__container">
+    <div class="section__header">
+      <span class="section__label">Collections</span>
+      <h2 class="section__title">Shop by Category</h2>
+      <p class="section__desc">Explore our curated range of premium collections</p>
+    </div>
+    <div class="category-grid">
+      {% set icons = ['🛍️', '👔', '👟', '💎', '🎒', '⌚', '👗', '🧥', '📱'] %}
+      {% for cat in categories %}
+      <a href="/user/products?category={{ cat.category }}" class="category-card">
+        <div class="category-card__icon">
+          {{ icons[loop.index0 % 9] }}
+        </div>
+        <h3 class="category-card__name">{{ cat.category }}</h3>
+        <span class="category-card__cta">Explore →</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<section class="section section--offers">
+  <div class="offers-banner">
+    <div class="offers-banner__bg"></div>
+    <div class="offers-banner__content">
+      <span class="offers-banner__pill">Limited Time Offer</span>
+      <h2 class="offers-banner__title">Get Up to 50% Off!</h2>
+      <p class="offers-banner__desc">Use code <strong class="offers-banner__code">SMART50</strong> at checkout on
+        selected premium items.</p>
+      <a href="/user/products" class="offers-banner__btn">
+        Shop Offers Now
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<section class="section section--trending">
+  <div class="section__container">
+    <div class="section__header">
+      <span class="section__label">Popular Now</span>
+      <h2 class="section__title">Trending Products</h2>
+      <p class="section__desc">Our most popular items handpicked for you</p>
+    </div>
+    <div class="section__header-action">
+      <a href="/user/products" class="view-all-btn">View All Products →</a>
+    </div>
+
+    {% if trending_products %}
+    <div class="product-grid">
+      {% for product in trending_products %}
+      <div class="product-card">
+        <div class="product-card__image-wrap">
+          <img src="{{ url_for('static', filename='uploads/product_images/' + product.image_name) }}"
+            alt="{{ product.name }}" class="product-card__image" />
+          <span class="product-card__badge">{{ product.category }}</span>
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">{{ product.name }}</h3>
+          <p class="product-card__price">₹{{ product.price }}</p>
+          <div class="product-card__actions">
+            <a href="/user/add-to-cart/{{ product.product_id }}"
+              class="product-card__btn product-card__btn--primary">Add to Cart</a>
+            <a href="/user/buy-now/{{ product.product_id }}" class="product-card__btn product-card__btn--accent">Buy
+              Now</a>
+          </div>
+          <a href="/user/product/{{ product.product_id }}" class="product-card__details-link">View Details</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="section__empty">No trending products available at the moment.</p>
+    {% endif %}
+  </div>
+</section>
+
+
+<section class="section section--features">
+  <div class="features-strip">
+    <div class="feature-item">
+      <div class="feature-item__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+      </div>
+      <div>
+        <h4 class="feature-item__title">Wide Selection</h4>
+        <p class="feature-item__desc">Browse thousands of products across multiple categories at great prices.</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-item__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="1" y="3" width="15" height="13"></rect>
           <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
           <circle cx="5.5" cy="18.5" r="2.5"></circle>
           <circle cx="18.5" cy="18.5" r="2.5"></circle>
         </svg>
-        <h4 style="margin-bottom: var(--sc-space-2); font-size: var(--sc-text-base);">Fast Delivery</h4>
-        <p style="font-size: var(--sc-text-sm); color: var(--sc-text-muted); margin: 0;">Get your orders delivered quickly
-          with free shipping on all orders.</p>
       </div>
-
-      <div class="sc-card sc-card--glass sc-card--hover">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-          style="color: var(--sc-success); margin-bottom: var(--sc-space-4);">
+      <div>
+        <h4 class="feature-item__title">Fast Delivery</h4>
+        <p class="feature-item__desc">Get your orders delivered quickly with free shipping on all orders.</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-item__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
         </svg>
-        <h4 style="margin-bottom: var(--sc-space-2); font-size: var(--sc-text-base);">Secure Payments</h4>
-        <p style="font-size: var(--sc-text-sm); color: var(--sc-text-muted); margin: 0;">Shop with confidence — your data
-          and transactions are fully protected.</p>
+      </div>
+      <div>
+        <h4 class="feature-item__title">Secure Payments</h4>
+        <p class="feature-item__desc">Shop with confidence — your data and transactions are fully protected.</p>
       </div>
     </div>
   </div>
+</section>
+
 {% endblock %}

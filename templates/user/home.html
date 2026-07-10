@@ -1,71 +1,76 @@
 {% extends "user/base.html" %}
 {% block title %}SmartCart - Home{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user/home.css') }}">
+{% endblock %}
 {% block content %}
-<div class="sc-dashboard sc-animate-fade-in-up">
-  <!-- Page Header -->
-  <div class="sc-dashboard__header">
-    <div>
-      <h2 style="margin-bottom: var(--sc-space-1);">Welcome back!</h2>
-      <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
-        Hello, <span class="text-accent" style="font-weight: 600;">{{ user_name }}</span> — ready to explore?
-      </p>
-    </div>
-  </div>
 
-  <!-- Quick Actions Grid -->
-  <div class="sc-stats" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-    <a href="/user/products" style="text-decoration: none; color: inherit;">
-      <div class="sc-card sc-card--glass sc-card--hover sc-card--accent" style="text-align: center; cursor: pointer;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-          style="color: var(--sc-brand-400); margin-bottom: var(--sc-space-4);">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-          <line x1="12" y1="22.08" x2="12" y2="12"></line>
-        </svg>
-        <h3 style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-semibold); margin-bottom: var(--sc-space-2);">
-          Browse Products
-        </h3>
-        <p style="font-size: var(--sc-text-sm); color: var(--sc-text-muted);">
-          Explore our full catalog of products
-        </p>
-      </div>
-    </a>
 
-    <a href="/user/cart" style="text-decoration: none; color: inherit;">
-      <div class="sc-card sc-card--glass sc-card--hover sc-card--accent-purple" style="text-align: center; cursor: pointer;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-          style="color: var(--sc-accent-400); margin-bottom: var(--sc-space-4);">
-          <circle cx="9" cy="21" r="1"></circle>
-          <circle cx="20" cy="21" r="1"></circle>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-        </svg>
-        <h3 style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-semibold); margin-bottom: var(--sc-space-2);">
-          My Cart
-        </h3>
-        <p style="font-size: var(--sc-text-sm); color: var(--sc-text-muted);">
-          View items in your shopping cart
-        </p>
-      </div>
-    </a>
-
-    <a href="/user/profile" style="text-decoration: none; color: inherit;">
-      <div class="sc-card sc-card--glass sc-card--hover sc-card--accent-green" style="text-align: center; cursor: pointer;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-          style="color: var(--sc-success); margin-bottom: var(--sc-space-4);">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-        <h3 style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-semibold); margin-bottom: var(--sc-space-2);">
-          My Profile
-        </h3>
-        <p style="font-size: var(--sc-text-sm); color: var(--sc-text-muted);">
-          Manage your account settings
-        </p>
-      </div>
-    </a>
+<div class="home-hero">
+  <div class="home-hero__inner">
+    <span class="home-hero__greeting">Welcome back</span>
+    <h1 class="home-hero__name">{{ user_name }}</h1>
+    <p class="home-hero__desc">What would you like to do today?</p>
   </div>
 </div>
+
+
+<div class="home-actions">
+  <a href="/user/products" class="home-action">
+    <div class="home-action__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path
+          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+        </path>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+      </svg>
+    </div>
+    <h3 class="home-action__title">Browse Products</h3>
+    <p class="home-action__desc">Explore our full catalog</p>
+    <span class="home-action__arrow">→</span>
+  </a>
+
+  <a href="/user/cart" class="home-action">
+    <div class="home-action__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+      </svg>
+    </div>
+    <h3 class="home-action__title">My Cart</h3>
+    <p class="home-action__desc">View your shopping cart</p>
+    <span class="home-action__arrow">→</span>
+  </a>
+
+  <a href="/user/my-orders" class="home-action">
+    <div class="home-action__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+      </svg>
+    </div>
+    <h3 class="home-action__title">My Orders</h3>
+    <p class="home-action__desc">Track your purchases</p>
+    <span class="home-action__arrow">→</span>
+  </a>
+
+  <a href="/user/profile" class="home-action">
+    <div class="home-action__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    </div>
+    <h3 class="home-action__title">My Profile</h3>
+    <p class="home-action__desc">Manage your account</p>
+    <span class="home-action__arrow">→</span>
+  </a>
+</div>
+
 {% endblock %}

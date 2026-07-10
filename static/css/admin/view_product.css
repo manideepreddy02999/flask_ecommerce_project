@@ -1,0 +1,249 @@
+.avp-container {
+    padding: 2rem 0;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+
+.avp-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+    color: var(--pe-text-muted);
+}
+
+.avp-breadcrumb__link {
+    color: var(--pe-primary-black);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.avp-breadcrumb__link:hover {
+    color: var(--pe-brand-navy);
+}
+
+.avp-breadcrumb__icon {
+    opacity: 0.5;
+}
+
+.avp-breadcrumb__current {
+    font-weight: 600;
+    color: var(--pe-text-muted);
+}
+
+
+.avp-card {
+    background: var(--pe-bg-white);
+    border: 1px solid var(--pe-border-color);
+    border-radius: 2px;
+    padding: 2.5rem;
+    box-shadow: var(--pe-shadow);
+}
+
+.avp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+}
+
+
+.avp-image-wrap {
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+    background: #f5f5f0;
+    border: 1px solid var(--pe-border-color);
+    padding-top: 100%;
+}
+
+.avp-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.avp-image-wrap:hover .avp-image {
+    transform: scale(1.05);
+}
+
+.avp-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--pe-primary-black);
+    color: var(--pe-bg-white);
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 2px;
+}
+
+
+.avp-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.avp-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--pe-primary-black);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.avp-price {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--pe-primary-black);
+    margin-bottom: 2rem;
+}
+
+
+.avp-desc {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--pe-border-color);
+}
+
+.avp-desc__title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--pe-text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.avp-desc__text {
+    font-size: 0.95rem;
+    color: var(--pe-text-dark);
+    line-height: 1.7;
+}
+
+
+.avp-meta {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+}
+
+.avp-meta__item {
+    display: flex;
+    flex-direction: column;
+}
+
+.avp-meta__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--pe-text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.avp-meta__value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--pe-primary-black);
+}
+
+
+.avp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.avp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    flex: 1;
+    min-width: 140px;
+}
+
+.avp-btn--primary {
+    background: var(--pe-primary-black);
+    color: var(--pe-bg-white);
+}
+
+.avp-btn--primary:hover {
+    background: var(--pe-brand-navy);
+}
+
+.avp-btn--delete {
+    background: transparent;
+    color: var(--pe-accent-red);
+    border-color: var(--pe-accent-red);
+}
+
+.avp-btn--delete:hover {
+    background: var(--pe-accent-red);
+    color: var(--pe-bg-white);
+}
+
+.avp-btn--ghost {
+    background: transparent;
+    color: var(--pe-primary-black);
+    border-color: var(--pe-border-color);
+}
+
+.avp-btn--ghost:hover {
+    border-color: var(--pe-primary-black);
+}
+
+
+@media (max-width: 900px) {
+    .avp-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .avp-image-wrap {
+        padding-top: 75%;
+    }
+}
+
+@media (max-width: 600px) {
+    .avp-card {
+        padding: 1.5rem;
+    }
+
+    .avp-title {
+        font-size: 2rem;
+    }
+
+    .avp-actions {
+        flex-direction: column;
+    }
+
+    .avp-btn {
+        width: 100%;
+        flex: none;
+    }
+}

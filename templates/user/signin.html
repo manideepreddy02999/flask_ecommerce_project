@@ -1,5 +1,8 @@
 {% extends "user/base.html" %}
 {% block title %}SmartCart - Sign In{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user/signin.css') }}">
+{% endblock %}
 {% block content %}
 <div class="sc-auth auth-container sc-animate-fade-in-up">
   <div class="sc-auth__card glass-card">
@@ -7,27 +10,29 @@
     <p class="sc-auth__subtitle">Sign in to your SmartCart account</p>
 
     <form method="POST" action="{{ url_for('user_signin') }}">
-      <div class="form-group">
-        <label for="signin-email">Email</label>
-        <input type="email" id="signin-email" name="email" required placeholder="you@example.com" />
+      <div class="sc-form-group">
+        <label class="sc-form-label" for="signin-email">Email</label>
+        <input class="sc-form-input" type="email" id="signin-email" name="email" required
+          placeholder="you@example.com" />
       </div>
-      <div class="form-group">
-        <label for="signin-password">Password</label>
-        <input type="password" id="signin-password" name="password" required placeholder="Enter your password" />
+      <div class="sc-form-group">
+        <label class="sc-form-label" for="signin-password">Password</label>
+        <input class="sc-form-input" type="password" id="signin-password" name="password" required
+          placeholder="Enter your password" />
       </div>
-      <button type="submit" class="sc-btn sc-btn--primary sc-btn--block mt-4">Sign In</button>
+      <button type="submit" class="sc-btn--primary">Sign In</button>
     </form>
 
 
     <div class="sc-auth__footer">
-      <div style="margin-bottom: var(--sc-space-2);">
+      <div>
         <a href="{{ url_for('user_forgot_password') }}">Forgot Password?</a>
       </div>
       Don't have an account? <a href="{{ url_for('user_signup') }}">Create one</a>
     </div>
-    
+
     <div class="sc-divider">or</div>
-    <div style="text-align: center; margin-bottom: var(--sc-space-4);">
+    <div>
       <a href="{{ url_for('admin_signin') }}" class="sc-btn sc-btn--ghost" style="width: 100%;">Admin Login</a>
     </div>
   </div>

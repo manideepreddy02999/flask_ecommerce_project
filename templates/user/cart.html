@@ -1,222 +1,122 @@
 {% extends "user/base.html" %}
 {% block title %}SmartCart - Your Cart{% endblock %}
+{% block page_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user/cart.css') }}">
+{% endblock %}
 {% block content %}
-<div class="sc-dashboard sc-animate-fade-in-up">
-  <div class="sc-dashboard__header">
-    <div>
-      <h2 style="margin-bottom: var(--sc-space-1);">Your Cart</h2>
-      <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm);">
-        Review your items before checkout.
-      </p>
-    </div>
-  </div>
 
+
+<div class="cart-hero">
+  <div class="cart-hero__inner">
+    <span class="cart-hero__label">Shopping Bag</span>
+    <h1 class="cart-hero__title">Your Cart</h1>
+    <p class="cart-hero__desc">Review your items before checkout</p>
+  </div>
+</div>
+
+<div class="cart-container">
   {% if not cart_items %}
-  <div class="glass-card">
-    <div class="sc-empty">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="sc-empty__icon">
-        <circle cx="9" cy="21" r="1"></circle>
-        <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-      </svg>
-      <h3 class="sc-empty__title">Your cart is empty</h3>
-      <p class="sc-empty__text">Looks like you haven't added anything to your cart yet.</p>
-      <a href="/user/products" class="sc-btn sc-btn--primary">Start Shopping</a>
-    </div>
+
+  <div class="cart-empty">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="cart-empty__icon">
+      <circle cx="9" cy="21" r="1"></circle>
+      <circle cx="20" cy="21" r="1"></circle>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+    </svg>
+    <h3 class="cart-empty__title">Your cart is empty</h3>
+    <p class="cart-empty__text">Looks like you haven't added anything yet.</p>
+    <a href="/user/products" class="cart-empty__btn">Start Shopping</a>
   </div>
   {% else %}
 
-  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--sc-space-6);" id="cart-grid">
-    <div class="glass-card" style="padding: 0; overflow: hidden; height: fit-content;">
-      <div style="overflow-x: auto;">
-        <table class="sc-table" style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr style="border-bottom: 1px solid var(--sc-border-strong);">
-              <th style="padding: var(--sc-space-4) var(--sc-space-3); text-align: center; width: 48px;">
-                <label class="sc-cart-checkbox">
-                  <input type="checkbox" id="select-all" checked />
-                  <span class="sc-cart-checkbox__box"></span>
-                </label>
-              </th>
-              <th style="padding: var(--sc-space-4) var(--sc-space-5); text-align: left; font-size: var(--sc-text-xs); font-weight: var(--sc-weight-semibold); color: var(--sc-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Product</th>
-              <th style="padding: var(--sc-space-4) var(--sc-space-5); text-align: center; font-size: var(--sc-text-xs); font-weight: var(--sc-weight-semibold); color: var(--sc-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Quantity</th>
-              <th style="padding: var(--sc-space-4) var(--sc-space-5); text-align: right; font-size: var(--sc-text-xs); font-weight: var(--sc-weight-semibold); color: var(--sc-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for pid, item in cart_items.items() %}
-            <tr id="row-{{ pid }}" style="border-bottom: 1px solid var(--sc-border); transition: background 0.15s ease, opacity 0.25s ease;"
-              onmouseenter="this.style.background='var(--sc-bg-surface-alt)'" onmouseleave="this.style.background=''">
-              
-              <td style="padding: var(--sc-space-4) var(--sc-space-3); text-align: center; vertical-align: middle;">
-                <label class="sc-cart-checkbox">
-                  <input type="checkbox" class="cart-item-checkbox" data-pid="{{ pid }}" data-price="{{ item.price }}" data-qty="{{ item.quantity }}" data-name="{{ item.name }}" data-image="{{ item.image }}" checked />
-                  <span class="sc-cart-checkbox__box"></span>
-                </label>
-              </td>
+  <div id="cart-grid" class="cart-grid">
 
-              <td style="padding: var(--sc-space-4) var(--sc-space-5);">
-                <div style="display: flex; align-items: center; gap: var(--sc-space-4);">
-                  <div style="
-                    width: 64px; height: 64px; border-radius: var(--sc-radius-lg);
-                    overflow: hidden; flex-shrink: 0; border: 1px solid var(--sc-border);
-                    background: var(--sc-bg-surface-alt);
-                  ">
-                    <img src="{{ url_for('static', filename='uploads/product_images/' + item.image) }}"
-                      alt="{{ item.name }}" style="width: 100%; height: 100%; object-fit: cover;" />
-                  </div>
-                  <div>
-                    <p style="font-weight: var(--sc-weight-semibold); color: var(--sc-text-primary); font-size: var(--sc-text-base); margin: 0; margin-bottom: var(--sc-space-1);">
-                      {{ item.name }}
-                    </p>
-                    <p style="color: var(--sc-text-muted); font-size: var(--sc-text-sm); margin: 0; margin-bottom: var(--sc-space-2);">
-                      ₹{{ item.price }}
-                    </p>
-                    <a href="#" onclick="updateCart('{{ pid }}', 'remove'); return false;" style="font-size: var(--sc-text-xs); color: var(--sc-danger); text-decoration: none; font-weight: var(--sc-weight-medium); transition: color 0.2s ease;"
-                      onmouseenter="this.style.color='var(--sc-danger-hover)'" onmouseleave="this.style.color='var(--sc-danger)'">
-                      Remove
-                    </a>
-                  </div>
+    <div class="cart-items">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th class="cart-table__th cart-table__th--check">
+              <label class="cart-checkbox">
+                <input type="checkbox" id="select-all" checked />
+                <span class="cart-checkbox__box"></span>
+              </label>
+            </th>
+            <th class="cart-table__th">Product</th>
+            <th class="cart-table__th">Quantity</th>
+            <th class="cart-table__th">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pid, item in cart_items.items() %}
+          <tr id="row-{{ pid }}" class="cart-table__row">
+            <td class="cart-table__td cart-table__td--check">
+              <label class="cart-checkbox">
+                <input type="checkbox" class="cart-item-checkbox" data-pid="{{ pid }}" data-price="{{ item.price }}"
+                  data-qty="{{ item.quantity }}" data-name="{{ item.name }}" data-image="{{ item.image }}" checked />
+                <span class="cart-checkbox__box"></span>
+              </label>
+            </td>
+            <td class="cart-table__td">
+              <div class="cart-product">
+                <div class="cart-product__img-wrap">
+                  <img src="{{ url_for('static', filename='uploads/product_images/' + item.image) }}"
+                    alt="{{ item.name }}" class="cart-product__img" />
                 </div>
-              </td>
-
-              <td style="padding: var(--sc-space-4) var(--sc-space-5); text-align: center;">
-                <div style="display: inline-flex; align-items: center; gap: var(--sc-space-3); padding: var(--sc-space-1) var(--sc-space-2); border: 1px solid var(--sc-border); border-radius: var(--sc-radius-md); background: rgba(255,255,255,0.03);">
-                  <a href="#" onclick="updateCart('{{ pid }}', 'decrement'); return false;" style="color: var(--sc-text-muted); padding: 0 var(--sc-space-2); text-decoration: none; font-weight: bold; transition: color 0.2s;" onmouseenter="this.style.color='var(--sc-text-primary)'" onmouseleave="this.style.color='var(--sc-text-muted)'">-</a>
-                  <span id="qty-{{ pid }}" style="font-weight: var(--sc-weight-semibold); width: 24px; text-align: center;">{{ item.quantity }}</span>
-                  <a href="#" onclick="updateCart('{{ pid }}', 'increment'); return false;" style="color: var(--sc-brand-400); padding: 0 var(--sc-space-2); text-decoration: none; font-weight: bold; transition: color 0.2s;" onmouseenter="this.style.color='var(--sc-brand-500)'" onmouseleave="this.style.color='var(--sc-brand-400)'">+</a>
+                <div class="cart-product__info">
+                  <p class="cart-product__name">{{ item.name }}</p>
+                  <p class="cart-product__price">₹{{ item.price }}</p>
+                  <a href="#" onclick="updateCart('{{ pid }}', 'remove'); return false;"
+                    class="cart-product__remove">Remove</a>
                 </div>
-              </td>
-
-              <td style="padding: var(--sc-space-4) var(--sc-space-5); text-align: right;">
-                <span id="item-total-{{ pid }}" style="font-weight: var(--sc-weight-semibold); color: var(--sc-text-primary); font-size: var(--sc-text-base);">
-                  ₹{{ item.price * item.quantity }}
-                </span>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+              </div>
+            </td>
+            <td class="cart-table__td">
+              <div class="cart-qty">
+                <a href="#" onclick="updateCart('{{ pid }}', 'decrement'); return false;" class="cart-qty__btn">−</a>
+                <span id="qty-{{ pid }}" class="cart-qty__value">{{ item.quantity }}</span>
+                <a href="#" onclick="updateCart('{{ pid }}', 'increment'); return false;"
+                  class="cart-qty__btn cart-qty__btn--plus">+</a>
+              </div>
+            </td>
+            <td class="cart-table__td cart-table__td--total">
+              <span id="item-total-{{ pid }}">₹{{ item.price * item.quantity }}</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
 
-    <div class="glass-card" style="height: fit-content; padding: var(--sc-space-6);">
-      <h3 style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-semibold); margin-bottom: var(--sc-space-2); color: var(--sc-text-primary);">Order Summary</h3>
-      <p id="selected-count" class="sc-selected-count" style="margin-bottom: var(--sc-space-6);"></p>
-      
-      <div style="display: flex; justify-content: space-between; margin-bottom: var(--sc-space-4);">
-        <span style="color: var(--sc-text-muted);">Subtotal</span>
-        <span id="subtotal" style="font-weight: var(--sc-weight-medium); color: var(--sc-text-primary);">₹{{ grand_total }}</span>
+
+    <div class="cart-summary">
+      <h3 class="cart-summary__title">Order Summary</h3>
+      <p id="selected-count" class="cart-summary__count"></p>
+
+      <div class="cart-summary__row">
+        <span>Subtotal</span>
+        <span id="subtotal">₹{{ grand_total }}</span>
       </div>
-      
-      <div style="display: flex; justify-content: space-between; margin-bottom: var(--sc-space-4);">
-        <span style="color: var(--sc-text-muted);">Shipping</span>
-        <span style="font-weight: var(--sc-weight-medium); color: var(--sc-success);">Free</span>
+      <div class="cart-summary__row">
+        <span>Shipping</span>
+        <span class="cart-summary__free">Free</span>
       </div>
-      
-      <div style="height: 1px; background: var(--sc-border); margin: var(--sc-space-4) 0;"></div>
-      
-      <div style="display: flex; justify-content: space-between; margin-bottom: var(--sc-space-6);">
-        <span style="font-size: var(--sc-text-lg); font-weight: var(--sc-weight-bold); color: var(--sc-text-primary);">Total</span>
-        <span id="grandtotal" style="font-size: var(--sc-text-2xl); font-weight: var(--sc-weight-bold); color: var(--sc-brand-400);">₹{{ grand_total }}</span>
+      <div class="cart-summary__divider"></div>
+      <div class="cart-summary__row cart-summary__row--total">
+        <span>Total</span>
+        <span id="grandtotal">₹{{ grand_total }}</span>
       </div>
-      
-      <button id="btn-proceed-checkout" class="sc-btn sc-btn--primary sc-btn--block" style="margin-bottom: var(--sc-space-3);">
-        Proceed to Checkout
-      </button>
-      <a href="/user/products" class="sc-btn sc-btn--ghost sc-btn--block">
-        Continue Shopping
-      </a>
+
+      <button id="btn-proceed-checkout" class="cart-summary__checkout">Proceed to Checkout</button>
+      <a href="/user/products" class="cart-summary__continue">Continue Shopping</a>
     </div>
   </div>
 
   {% endif %}
 </div>
 
-<style>
-  @media (max-width: 992px) {
-    #cart-grid {
-      grid-template-columns: 1fr !important;
-    }
-  }
-
-  /* ── Cart Checkbox Styles ── */
-  .sc-cart-checkbox {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    position: relative;
-    width: 22px;
-    height: 22px;
-  }
-
-  .sc-cart-checkbox input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-  }
-
-  .sc-cart-checkbox__box {
-    width: 20px;
-    height: 20px;
-    border-radius: var(--sc-radius-sm, 6px);
-    border: 2px solid var(--sc-border-strong, #555);
-    background: rgba(255, 255, 255, 0.03);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    position: relative;
-  }
-
-  .sc-cart-checkbox__box::after {
-    content: '';
-    width: 10px;
-    height: 6px;
-    border-left: 2.5px solid #fff;
-    border-bottom: 2.5px solid #fff;
-    transform: rotate(-45deg) scale(0);
-    transition: transform 0.15s ease;
-    position: absolute;
-    top: 4px;
-  }
-
-  .sc-cart-checkbox input:checked + .sc-cart-checkbox__box {
-    background: var(--sc-brand-500, #00bcd4);
-    border-color: var(--sc-brand-500, #00bcd4);
-    box-shadow: 0 0 10px rgba(0, 188, 212, 0.35);
-  }
-
-  .sc-cart-checkbox input:checked + .sc-cart-checkbox__box::after {
-    transform: rotate(-45deg) scale(1);
-  }
-
-  .sc-cart-checkbox:hover .sc-cart-checkbox__box {
-    border-color: var(--sc-brand-400, #26c6da);
-  }
-
-  /* Dim unchecked rows */
-  tr.cart-row--unselected {
-    opacity: 0.4;
-  }
-
-  tr.cart-row--unselected:hover {
-    opacity: 0.6;
-  }
-
-  /* Selected items counter */
-  .sc-selected-count {
-    font-size: var(--sc-text-xs, 0.75rem);
-    color: var(--sc-text-muted, #999);
-    margin-top: var(--sc-space-2, 0.5rem);
-  }
-</style>
+{% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
-{% endblock %}
 {% endblock %}
